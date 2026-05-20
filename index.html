@@ -501,91 +501,6 @@ body{
 .service-detail-val{font-size:15px;font-weight:800;color:var(--text-dark)}
 
 /* ══════════════════════════
-   SIDEBAR / DRAWER
-══════════════════════════ */
-.sidebar-overlay{
-  position:absolute;inset:0;background:rgba(13,31,78,0.6);backdrop-filter:blur(2px);
-  z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s;
-}
-.sidebar-overlay.open{opacity:1;pointer-events:all}
-.sidebar{
-  position:absolute;left:0;top:0;bottom:0;width:300px;
-  background:var(--white);z-index:101;
-  transform:translateX(-100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.sidebar.open{transform:translateX(0)}
-.sidebar-header{
-  background:linear-gradient(145deg,var(--navy),var(--navy2));
-  padding:52px 22px 24px;
-  position:relative;overflow:hidden;
-}
-.sidebar-header::after{
-  content:'';position:absolute;right:-20px;bottom:-20px;
-  width:120px;height:120px;
-  background:radial-gradient(circle,rgba(47,127,216,0.3) 0%,transparent 70%);border-radius:50%;
-}
-.sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px;position:relative;z-index:2}
-.sidebar-logo-mark{
-  width:40px;height:40px;border-radius:14px;
-  background:linear-gradient(135deg,var(--sky),var(--sage));
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(47,127,216,0.4);
-}
-.sidebar-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff}
-.sidebar-user{position:relative;z-index:2}
-.sidebar-user-avatar{
-  width:52px;height:52px;border-radius:18px;
-  background:linear-gradient(135deg,var(--sky),var(--sage));
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:900;color:#fff;margin-bottom:10px;
-  box-shadow:0 4px 14px rgba(0,0,0,0.25);
-}
-.sidebar-user-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:3px}
-.sidebar-user-role{font-size:12px;font-weight:600;color:rgba(255,255,255,0.65)}
-.sidebar-close{
-  position:absolute;right:16px;top:16px;
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,0.15);
-  display:flex;align-items:center;justify-content:center;
-  border:none;cursor:pointer;color:#fff;z-index:10;
-}
-.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
-.sidebar-section-label{
-  font-size:10px;font-weight:800;color:var(--text-soft);
-  text-transform:uppercase;letter-spacing:0.8px;
-  padding:8px 12px 4px;
-}
-.sidebar-nav-item{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 14px;border-radius:16px;margin-bottom:4px;
-  cursor:pointer;transition:background 0.18s;border:none;background:transparent;
-  width:100%;text-align:left;font-family:'Nunito',sans-serif;
-}
-.sidebar-nav-item:hover,.sidebar-nav-item.active{background:var(--sky3)}
-.sidebar-nav-item.active .sidebar-nav-label{color:var(--navy);font-weight:800}
-.sidebar-nav-item.active svg{color:var(--sky)}
-.sidebar-nav-icon{
-  width:38px;height:38px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--slate2);flex-shrink:0;
-}
-.sidebar-nav-item.active .sidebar-nav-icon{background:var(--sky3)}
-.sidebar-nav-icon svg{color:var(--text-soft)}
-.sidebar-nav-label{font-size:14px;font-weight:700;color:var(--text-mid)}
-.sidebar-footer{
-  padding:16px;border-top:1.5px solid var(--slate2);
-}
-.sidebar-logout{
-  display:flex;align-items:center;gap:12px;
-  padding:14px;border-radius:16px;cursor:pointer;
-  background:var(--rose2);border:none;font-family:'Nunito',sans-serif;
-  font-size:14px;font-weight:700;color:var(--rose);width:100%;transition:background 0.18s;
-}
-.sidebar-logout:hover{background:#fcd5d0}
-.sidebar-logout svg{color:var(--rose)}
-
-/* ══════════════════════════
    FLOATING BOTTOM NAV
 ══════════════════════════ */
 .bottom-nav{
@@ -734,65 +649,12 @@ body{
 <div class="device" id="app">
   <div class="notch"></div>
 
-  <!-- ══════════════ SIDEBAR ══════════════ -->
-  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <button class="sidebar-close" onclick="closeSidebar()">
-        <i data-lucide="x" style="width:16px;height:16px"></i>
-      </button>
-      <div class="sidebar-logo">
-        <div class="sidebar-logo-mark">
-          <i data-lucide="heart-pulse" style="width:20px;height:20px;color:#fff"></i>
-        </div>
-        <span class="sidebar-brand">Sensible Care</span>
-      </div>
-      <div class="sidebar-user">
-        <div class="sidebar-user-avatar">SC</div>
-        <div class="sidebar-user-name">Sensible Care Pty</div>
-        <div class="sidebar-user-role">Verified Provider · Active</div>
-      </div>
-    </div>
-    <div class="sidebar-nav">
-      <div class="sidebar-section-label">Provider Portal</div>
-      <button class="sidebar-nav-item active" onclick="showScreen('dashboard');closeSidebar()">
-        <div class="sidebar-nav-icon"><i data-lucide="layout-dashboard" style="width:18px;height:18px"></i></div>
-        <span class="sidebar-nav-label">Dashboard</span>
-      </button>
-      <button class="sidebar-nav-item" onclick="showScreen('services');closeSidebar()">
-        <div class="sidebar-nav-icon"><i data-lucide="briefcase-medical" style="width:18px;height:18px"></i></div>
-        <span class="sidebar-nav-label">My Services</span>
-      </button>
-      <button class="sidebar-nav-item" onclick="showScreen('compliance');closeSidebar()">
-        <div class="sidebar-nav-icon"><i data-lucide="shield-check" style="width:18px;height:18px"></i></div>
-        <span class="sidebar-nav-label">Compliance</span>
-      </button>
-      <button class="sidebar-nav-item" onclick="showScreen('agreements');closeSidebar()">
-        <div class="sidebar-nav-icon"><i data-lucide="file-signature" style="width:18px;height:18px"></i></div>
-        <span class="sidebar-nav-label">Agreements</span>
-      </button>
-      <button class="sidebar-nav-item" onclick="showScreen('invoices');closeSidebar()">
-        <div class="sidebar-nav-icon"><i data-lucide="receipt" style="width:18px;height:18px"></i></div>
-        <span class="sidebar-nav-label">Invoices</span>
-      </button>
-    </div>
-    <div class="sidebar-footer">
-      <button class="sidebar-logout">
-        <i data-lucide="log-out" style="width:18px;height:18px"></i>
-        Log Out
-      </button>
-    </div>
-  </div>
-
   <!-- ══════════════ SCREEN: DASHBOARD ══════════════ -->
   <div class="screen active" id="s-dashboard" style="flex-direction:column;overflow:hidden;">
     <div class="dash-hero">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <button onclick="openSidebar()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="menu" style="width:20px;height:20px;color:#fff"></i>
-        </button>
-        <span style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:rgba(255,255,255,0.9)">Provider Portal</span>
-        <div class="hero-avatar" onclick="openSidebar()">SC</div>
+        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+        <div class="hero-avatar">SC</div>
       </div>
       <div style="position:relative;z-index:2">
         <div class="hero-greeting">Welcome back,</div>
@@ -979,10 +841,7 @@ body{
   <div class="screen" id="s-compliance" style="flex-direction:column;overflow:hidden;">
     <div class="comp-hero">
       <div class="comp-hero-topbar">
-        <button onclick="showScreen('dashboard')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="arrow-left" style="width:18px;height:18px;color:#fff"></i>
-        </button>
-        <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">Compliance</span>
+        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
         <div class="hero-avatar">SC</div>
       </div>
       <div class="comp-hero-title">Compliance Documents</div>
@@ -1110,13 +969,8 @@ body{
   <div class="screen" id="s-agreements" style="flex-direction:column;overflow:hidden;">
     <div class="agr-hero">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2">
-        <button onclick="showScreen('dashboard')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="arrow-left" style="width:18px;height:18px;color:#fff"></i>
-        </button>
-        <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">Agreements</span>
-        <button style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="refresh-cw" style="width:16px;height:16px;color:#fff"></i>
-        </button>
+        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+        <div class="hero-avatar">SC</div>
       </div>
       <div style="position:relative;z-index:2">
         <div class="hero-greeting">View and manage your</div>
@@ -1213,13 +1067,8 @@ body{
   <div class="screen" id="s-invoices" style="flex-direction:column;overflow:hidden;">
     <div class="inv-hero">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <button onclick="showScreen('dashboard')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="arrow-left" style="width:18px;height:18px;color:#fff"></i>
-        </button>
-        <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">Invoices</span>
-        <button style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="refresh-cw" style="width:16px;height:16px;color:#fff"></i>
-        </button>
+        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+        <div class="hero-avatar">SC</div>
       </div>
       <div style="position:relative;z-index:2;margin-bottom:4px">
         <div class="hero-greeting">Create an invoice manually or</div>
@@ -1370,10 +1219,7 @@ body{
   <div class="screen" id="s-services" style="flex-direction:column;overflow:hidden;">
     <div class="serv-hero">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <button onclick="showScreen('dashboard')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-          <i data-lucide="arrow-left" style="width:18px;height:18px;color:#fff"></i>
-        </button>
-        <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">My Services</span>
+        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
         <div class="hero-avatar">SC</div>
       </div>
       <div style="position:relative;z-index:2;margin-bottom:16px">
@@ -1476,15 +1322,6 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s-' + id).classList.add('active');
   lucide.createIcons();
-}
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('overlay').classList.add('open');
-  lucide.createIcons();
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('open');
 }
 function switchCompTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
