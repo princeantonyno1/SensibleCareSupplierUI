@@ -1,1339 +1,2550 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Sensible Care · Provider Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --navy:#0D1F4E;
-  --navy2:#1A3580;
-  --sky:#2F7FD8;
-  --sky2:#D6EAFF;
-  --sky3:#EAF4FF;
-  --sage:#1F9E7A;
-  --sage2:#D0F2E8;
-  --sage3:#F0FAF6;
-  --amber:#D4800A;
-  --amber2:#FDEBD0;
-  --amber3:#FFF8EE;
-  --rose:#C0392B;
-  --rose2:#FDECEA;
-  --rose3:#FFF5F5;
-  --violet:#6B3FA0;
-  --violet2:#EDE0FF;
-  --slate:#5C6E8A;
-  --slate2:#EEF2F8;
-  --slate3:#D5DCE8;
-  --white:#FFFFFF;
-  --bg:#F3F7FE;
-  --text-dark:#0D1F4E;
-  --text-mid:#3D5177;
-  --text-soft:#6B7FA3;
-  --shadow-card:0 4px 24px rgba(13,31,78,0.10);
-  --shadow-float:0 8px 40px rgba(13,31,78,0.18);
-  --r-xl:24px;
-  --r-lg:18px;
-  --r-md:14px;
-  --r-sm:10px;
-}
-html,body{height:100%;overflow:hidden}
-body{
-  font-family:'Nunito',sans-serif;
-  background:linear-gradient(135deg,#0a1640 0%,#0f2a6e 50%,#0c3b5c 100%);
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;padding:20px 12px;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Sensible Care · Provider Portal</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
 
-/* ── DEVICE FRAME ── */
-.device{
-  width:390px;height:844px;
-  background:var(--bg);
-  border-radius:50px;overflow:hidden;
-  position:relative;
-  box-shadow:0 70px 140px rgba(0,0,0,0.6),0 0 0 2px rgba(255,255,255,0.15);
-  display:flex;flex-direction:column;
-  flex-shrink:0;
-}
-.notch{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:130px;height:34px;background:#0a1640;border-radius:0 0 22px 22px;
-  z-index:200;
-}
+    :root {
+      --navy: #0D1F4E;
+      --navy2: #1A3580;
+      --sky: #2F7FD8;
+      --sky2: #D6EAFF;
+      --sky3: #EAF4FF;
+      --sage: #1F9E7A;
+      --sage2: #D0F2E8;
+      --sage3: #F0FAF6;
+      --amber: #D4800A;
+      --amber2: #FDEBD0;
+      --amber3: #FFF8EE;
+      --rose: #C0392B;
+      --rose2: #FDECEA;
+      --rose3: #FFF5F5;
+      --violet: #6B3FA0;
+      --violet2: #EDE0FF;
+      --slate: #5C6E8A;
+      --slate2: #EEF2F8;
+      --slate3: #D5DCE8;
+      --white: #FFFFFF;
+      --bg: #F3F7FE;
+      --text-dark: #0D1F4E;
+      --text-mid: #3D5177;
+      --text-soft: #6B7FA3;
+      --shadow-card: 0 4px 24px rgba(13, 31, 78, 0.10);
+      --shadow-float: 0 8px 40px rgba(13, 31, 78, 0.18);
+      --r-xl: 24px;
+      --r-lg: 18px;
+      --r-md: 14px;
+      --r-sm: 10px;
+    }
 
-/* ── SCREENS ── */
-.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
-.screen.active{display:flex}
-.scroll-body{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:90px}
-.scroll-body::-webkit-scrollbar{display:none}
+    html {
+      height: 100%
+    }
 
-/* ── TOP HERO HEADER ── */
-.hero{
-  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 60%,var(--sky) 100%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;right:-40px;top:-40px;
-  width:200px;height:200px;
-  background:radial-gradient(circle,rgba(47,127,216,0.35) 0%,transparent 70%);
-  border-radius:50%;
-}
-.hero::after{
-  content:'';position:absolute;right:30px;bottom:-20px;
-  width:100px;height:100px;
-  background:radial-gradient(circle,rgba(31,158,122,0.3) 0%,transparent 70%);
-  border-radius:50%;
-}
-.hero-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:2}
-.hero-brand{display:flex;align-items:center;gap:10px}
-.hero-logo-mark{
-  width:36px;height:36px;border-radius:12px;
-  background:linear-gradient(135deg,var(--sky),var(--sage));
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(47,127,216,0.4);
-}
-.hero-brand-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;letter-spacing:0.3px}
-.hero-avatar{
-  width:40px;height:40px;border-radius:50%;
-  background:linear-gradient(135deg,var(--sky),var(--sage));
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:800;color:#fff;
-  border:2.5px solid rgba(255,255,255,0.4);
-  box-shadow:0 4px 14px rgba(0,0,0,0.3);cursor:pointer;
-}
-.hero-greeting{font-size:13px;color:rgba(255,255,255,0.7);font-weight:500;margin-bottom:4px;position:relative;z-index:2}
-.hero-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:16px;position:relative;z-index:2}
-.hero-status-row{display:flex;align-items:center;gap:10px;position:relative;z-index:2}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 14px;border-radius:30px;font-size:12px;font-weight:700;
-  background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);
-  color:#fff;border:1px solid rgba(255,255,255,0.25);
-}
-.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:#5DF5A0;box-shadow:0 0 6px rgba(93,245,160,0.8)}
-.hero-progress-pill{
-  flex:1;background:rgba(255,255,255,0.12);border-radius:20px;padding:6px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-  border:1px solid rgba(255,255,255,0.2);
-}
-.hero-progress-pill span{font-size:11px;font-weight:700;color:rgba(255,255,255,0.85)}
-.hero-prog-bar{width:80px;height:6px;background:rgba(255,255,255,0.2);border-radius:3px;overflow:hidden}
-.hero-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#5DF5A0,#2FC9FF)}
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #0a1640 0%, #0f2a6e 50%, #0c3b5c 100%);
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 16px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
 
-/* ── WAVE ── */
-.wave-sep{height:28px;background:var(--navy);flex-shrink:0}
-.wave-sep svg{display:block;width:100%;height:28px}
+    /* ── DEVICE FRAME ── */
+    .device {
+      width: 390px;
+      height: 844px;
+      background: var(--bg);
+      border-radius: 50px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 70px 140px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transform-origin: center center;
+    }
 
-/* ── SECTION HEADER ── */
-.sec-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;margin:18px 0 10px;
-}
-.sec-title{
-  display:flex;align-items:center;gap:7px;
-  font-size:13px;font-weight:800;color:var(--text-dark);text-transform:uppercase;letter-spacing:0.7px;
-}
-.sec-title svg{color:var(--sky);opacity:0.9}
-.sec-more{font-size:12px;font-weight:700;color:var(--sky);cursor:pointer}
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 34px;
+      background: #0a1640;
+      border-radius: 0 0 22px 22px;
+      z-index: 200;
+    }
 
-/* ── KPI CARDS ── */
-.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px;margin-bottom:4px}
-.kpi-card{
-  background:var(--white);border-radius:var(--r-lg);
-  padding:14px 10px 12px;text-align:center;
-  box-shadow:var(--shadow-card);
-  transition:transform 0.18s;cursor:pointer;
-  border:1.5px solid transparent;
-}
-.kpi-card:active{transform:scale(0.97)}
-.kpi-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
-.kpi-val{font-size:16px;font-weight:900;margin-bottom:2px;line-height:1}
-.kpi-lbl{font-size:10px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.4px}
+    /* ── SCREENS ── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden
+    }
 
-/* ── OVERVIEW GRID ── */
-.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px;margin-bottom:4px}
-.ov-card{
-  background:var(--white);border-radius:var(--r-lg);padding:16px 14px;
-  box-shadow:var(--shadow-card);cursor:pointer;transition:transform 0.18s;
-  display:flex;flex-direction:column;gap:6px;
-  border:1.5px solid transparent;
-}
-.ov-card:active{transform:scale(0.97)}
-.ov-card-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
-.ov-card-label{font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px}
-.ov-card-val{font-size:18px;font-weight:900;color:var(--text-dark);line-height:1.1}
-.ov-card-sub{font-size:11px;font-weight:600;color:var(--text-soft)}
+    .screen.active {
+      display: flex
+    }
 
-/* ── ACTION BUTTONS ── */
-.action-btn{
-  display:flex;align-items:center;gap:14px;
-  margin:0 18px 10px;padding:16px 16px;
-  background:var(--white);border-radius:var(--r-lg);
-  box-shadow:var(--shadow-card);border:none;cursor:pointer;
-  text-align:left;width:calc(100% - 36px);
-  transition:transform 0.18s,box-shadow 0.18s;
-  border:1.5px solid transparent;
-}
-.action-btn:active{transform:scale(0.98)}
-.action-btn.primary{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-color:transparent}
-.action-btn.teal{background:linear-gradient(135deg,var(--sage),#27c49a);color:#fff}
-.action-btn.amber{background:linear-gradient(135deg,var(--amber),#e8921b);color:#fff}
-.action-btn-icon{
-  width:48px;height:48px;border-radius:16px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.action-btn.primary .action-btn-icon{background:rgba(255,255,255,0.2)}
-.action-btn.teal .action-btn-icon{background:rgba(255,255,255,0.2)}
-.action-btn.amber .action-btn-icon{background:rgba(255,255,255,0.2)}
-.action-btn.outline .action-btn-icon{background:var(--sky3)}
-.action-btn-body{flex:1}
-.action-btn-title{font-size:15px;font-weight:800;margin-bottom:3px}
-.action-btn.outline .action-btn-title{color:var(--text-dark)}
-.action-btn-sub{font-size:12px;font-weight:600;opacity:0.8}
-.action-btn.outline .action-btn-sub{color:var(--text-soft)}
-.action-arrow{opacity:0.6;flex-shrink:0}
+    .scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding-bottom: 90px
+    }
 
-/* ── CARE TEAM ── */
-.care-team-card{
-  margin:0 18px 10px;background:var(--white);border-radius:var(--r-lg);
-  padding:16px;box-shadow:var(--shadow-card);
-  display:flex;align-items:center;gap:14px;
-  border-left:4px solid var(--sage);
-}
-.care-avatar{
-  width:52px;height:52px;border-radius:18px;
-  background:linear-gradient(135deg,var(--sage),#34d3bf);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:900;color:#fff;flex-shrink:0;
-  box-shadow:0 4px 12px rgba(31,158,122,0.3);
-}
-.care-info{flex:1}
-.care-eyebrow{font-size:10px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px}
-.care-name{font-size:16px;font-weight:800;color:var(--text-dark);margin-bottom:2px}
-.care-role{font-size:12px;font-weight:600;color:var(--text-soft)}
-.care-call{
-  width:44px;height:44px;border-radius:14px;
-  background:linear-gradient(135deg,var(--sage),#27c49a);
-  display:flex;align-items:center;justify-content:center;
-  border:none;cursor:pointer;
-  box-shadow:0 4px 12px rgba(31,158,122,0.35);
-  flex-shrink:0;
-}
+    .scroll-body::-webkit-scrollbar {
+      display: none
+    }
 
-/* ── RECENT ACTIVITY ── */
-.activity-list{padding:0 18px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.activity-item{
-  background:var(--white);border-radius:var(--r-md);padding:12px 14px;
-  display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(13,31,78,0.07);
-}
-.activity-dot{
-  width:36px;height:36px;border-radius:12px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.activity-body{flex:1}
-.activity-title{font-size:13px;font-weight:700;color:var(--text-dark);margin-bottom:2px}
-.activity-time{font-size:11px;font-weight:600;color:var(--text-soft)}
+    /* ── TOP HERO HEADER ── */
+    .hero {
+      background: linear-gradient(145deg, var(--navy) 0%, var(--navy2) 60%, var(--sky) 100%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* ══════════════════════════
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(47, 127, 216, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: 30px;
+      bottom: -20px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(31, 158, 122, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2
+    }
+
+    .hero-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .hero-logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--sky), var(--sage));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(47, 127, 216, 0.4);
+    }
+
+    .hero-brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.3px
+    }
+
+    .hero-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sky), var(--sage));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      border: 2.5px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
+
+    .hero-greeting {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      margin-bottom: 4px;
+      position: relative;
+      z-index: 2
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2
+    }
+
+    .hero-status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #5DF5A0;
+      box-shadow: 0 0 6px rgba(93, 245, 160, 0.8)
+    }
+
+    .hero-progress-pill {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-progress-pill span {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85)
+    }
+
+    .hero-prog-bar {
+      width: 80px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      overflow: hidden
+    }
+
+    .hero-prog-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #5DF5A0, #2FC9FF)
+    }
+
+    /* ── WAVE ── */
+    .wave-sep {
+      height: 28px;
+      background: var(--navy);
+      flex-shrink: 0
+    }
+
+    .wave-sep svg {
+      display: block;
+      width: 100%;
+      height: 28px
+    }
+
+    /* ── SECTION HEADER ── */
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      margin: 18px 0 10px;
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .sec-title svg {
+      color: var(--sky);
+      opacity: 0.9
+    }
+
+    .sec-more {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sky);
+      cursor: pointer
+    }
+
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      padding: 0 18px;
+      margin-bottom: 4px
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 14px 10px 12px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.18s;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+    }
+
+    .kpi-card:active {
+      transform: scale(0.97)
+    }
+
+    .kpi-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px
+    }
+
+    .kpi-val {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 2px;
+      line-height: 1
+    }
+
+    .kpi-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.4px
+    }
+
+    /* ── OVERVIEW GRID ── */
+    .ov-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 18px;
+      margin-bottom: 4px
+    }
+
+    .ov-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px 14px;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+      transition: transform 0.18s;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border: 1.5px solid transparent;
+    }
+
+    .ov-card:active {
+      transform: scale(0.97)
+    }
+
+    .ov-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px
+    }
+
+    .ov-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px
+    }
+
+    .ov-card-val {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.1
+    }
+
+    .ov-card-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    /* ── ACTION BUTTONS ── */
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 18px 10px;
+      padding: 16px 16px;
+      background: var(--white);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-card);
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      width: calc(100% - 36px);
+      transition: transform 0.18s, box-shadow 0.18s;
+      border: 1.5px solid transparent;
+    }
+
+    .action-btn:active {
+      transform: scale(0.98)
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: #fff;
+      border-color: transparent
+    }
+
+    .action-btn.teal {
+      background: linear-gradient(135deg, var(--sage), #27c49a);
+      color: #fff
+    }
+
+    .action-btn.amber {
+      background: linear-gradient(135deg, var(--amber), #e8921b);
+      color: #fff
+    }
+
+    .action-btn-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn.primary .action-btn-icon {
+      background: rgba(255, 255, 255, 0.2)
+    }
+
+    .action-btn.teal .action-btn-icon {
+      background: rgba(255, 255, 255, 0.2)
+    }
+
+    .action-btn.amber .action-btn-icon {
+      background: rgba(255, 255, 255, 0.2)
+    }
+
+    .action-btn.outline .action-btn-icon {
+      background: var(--sky3)
+    }
+
+    .action-btn-body {
+      flex: 1
+    }
+
+    .action-btn-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 3px
+    }
+
+    .action-btn.outline .action-btn-title {
+      color: var(--text-dark)
+    }
+
+    .action-btn-sub {
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.8
+    }
+
+    .action-btn.outline .action-btn-sub {
+      color: var(--text-soft)
+    }
+
+    .action-arrow {
+      opacity: 0.6;
+      flex-shrink: 0
+    }
+
+    /* ── CARE TEAM ── */
+    .care-team-card {
+      margin: 0 18px 10px;
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-left: 4px solid var(--sage);
+    }
+
+    .care-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--sage), #34d3bf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(31, 158, 122, 0.3);
+    }
+
+    .care-info {
+      flex: 1
+    }
+
+    .care-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--sage);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 3px
+    }
+
+    .care-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 2px
+    }
+
+    .care-role {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    .care-call {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sage), #27c49a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(31, 158, 122, 0.35);
+      flex-shrink: 0;
+    }
+
+    /* ── RECENT ACTIVITY ── */
+    .activity-list {
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    .activity-item {
+      background: var(--white);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 10px rgba(13, 31, 78, 0.07);
+    }
+
+    .activity-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .activity-body {
+      flex: 1
+    }
+
+    .activity-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 2px
+    }
+
+    .activity-time {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    /* ══════════════════════════
    COMPLIANCE SCREEN
 ══════════════════════════ */
-.comp-hero{
-  background:linear-gradient(145deg,var(--navy) 0%,#1e3575 60%,var(--violet) 100%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.comp-hero::before{
-  content:'';position:absolute;right:-20px;top:-20px;
-  width:180px;height:180px;
-  background:radial-gradient(circle,rgba(107,63,160,0.4) 0%,transparent 70%);border-radius:50%;
-}
-.comp-hero-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2}
-.comp-hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:6px;position:relative;z-index:2}
-.comp-hero-sub{font-size:13px;color:rgba(255,255,255,0.7);font-weight:500;margin-bottom:20px;position:relative;z-index:2}
-.comp-stats-row{display:flex;gap:10px;position:relative;z-index:2}
-.comp-stat-pill{
-  flex:1;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);
-  border-radius:16px;padding:12px 10px;text-align:center;
-  border:1px solid rgba(255,255,255,0.2);
-}
-.comp-stat-num{font-size:22px;font-weight:900;color:#fff;line-height:1}
-.comp-stat-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.4px;margin-top:4px}
+    .comp-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #1e3575 60%, var(--violet) 100%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-.bulk-upload-btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  margin:16px 18px 0;padding:16px;
-  background:linear-gradient(135deg,var(--sky),var(--sky2) 400%);
-  background:linear-gradient(135deg,var(--navy2),var(--sky));
-  color:#fff;border-radius:var(--r-lg);border:none;cursor:pointer;font-family:'Nunito',sans-serif;
-  font-size:16px;font-weight:800;box-shadow:0 6px 20px rgba(13,31,78,0.3);
-  transition:transform 0.18s;width:calc(100% - 36px);
-}
-.bulk-upload-btn:active{transform:scale(0.98)}
+    .comp-hero::before {
+      content: '';
+      position: absolute;
+      right: -20px;
+      top: -20px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(107, 63, 160, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+    }
 
-.tab-row{display:flex;gap:0;margin:16px 18px 0;background:var(--slate2);border-radius:14px;padding:4px}
-.tab-btn{
-  flex:1;padding:11px 8px;border-radius:11px;border:none;background:transparent;
-  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);
-  cursor:pointer;transition:all 0.2s;
-}
-.tab-btn.active{background:var(--white);color:var(--navy);box-shadow:0 2px 10px rgba(13,31,78,0.1)}
+    .comp-hero-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2
+    }
 
-.info-banner{
-  margin:12px 18px 0;padding:14px 16px;
-  background:var(--sky3);border-radius:var(--r-md);
-  border-left:4px solid var(--sky);
-  display:flex;gap:10px;align-items:flex-start;
-}
-.info-banner svg{flex-shrink:0;color:var(--sky);margin-top:1px}
-.info-banner-text{font-size:12px;font-weight:600;color:var(--text-mid);line-height:1.55}
+    .comp-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 2
+    }
 
-.doc-list{padding:0 18px;display:flex;flex-direction:column;gap:10px;margin-top:14px}
-.doc-card{
-  background:var(--white);border-radius:var(--r-lg);padding:16px;
-  box-shadow:var(--shadow-card);
-  border-left:4px solid var(--slate3);
-  transition:transform 0.18s;
-}
-.doc-card.approved{border-left-color:var(--sage)}
-.doc-card.pending{border-left-color:var(--amber)}
-.doc-card.rejected{border-left-color:var(--rose)}
-.doc-card-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
-.doc-card-icon{
-  width:42px;height:42px;border-radius:14px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.doc-card-icon.approved{background:var(--sage2)}
-.doc-card-icon.pending{background:var(--amber2)}
-.doc-card.approved .doc-card-icon svg{color:var(--sage)}
-.doc-card.pending .doc-card-icon svg{color:var(--amber)}
-.doc-card-body{flex:1}
-.doc-card-title{font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:3px;line-height:1.3}
-.doc-card-accepted{font-size:11px;font-weight:600;color:var(--text-soft)}
-.doc-card-file{font-size:11px;font-weight:700;color:var(--sky);margin-top:2px}
-.status-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;
-  text-transform:uppercase;letter-spacing:0.4px;
-}
-.status-tag.approved{background:var(--sage2);color:var(--sage)}
-.status-tag.pending{background:var(--amber2);color:var(--amber)}
-.status-tag.rejected{background:var(--rose2);color:var(--rose)}
-.replace-btn{
-  width:100%;margin-top:10px;padding:10px;border-radius:12px;
-  background:var(--slate2);border:1.5px solid var(--slate3);
-  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-mid);
-  cursor:pointer;transition:background 0.15s;
-}
-.replace-btn:hover{background:var(--slate3)}
+    .comp-hero-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2
+    }
 
-/* ══════════════════════════
+    .comp-stats-row {
+      display: flex;
+      gap: 10px;
+      position: relative;
+      z-index: 2
+    }
+
+    .comp-stat-pill {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 12px 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .comp-stat-num {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1
+    }
+
+    .comp-stat-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-top: 4px
+    }
+
+    .bulk-upload-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px 18px 0;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--sky), var(--sky2) 400%);
+      background: linear-gradient(135deg, var(--navy2), var(--sky));
+      color: #fff;
+      border-radius: var(--r-lg);
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 6px 20px rgba(13, 31, 78, 0.3);
+      transition: transform 0.18s;
+      width: calc(100% - 36px);
+    }
+
+    .bulk-upload-btn:active {
+      transform: scale(0.98)
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 0;
+      margin: 16px 18px 0;
+      background: var(--slate2);
+      border-radius: 14px;
+      padding: 4px
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 8px;
+      border-radius: 11px;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 10px rgba(13, 31, 78, 0.1)
+    }
+
+    .info-banner {
+      margin: 12px 18px 0;
+      padding: 14px 16px;
+      background: var(--sky3);
+      border-radius: var(--r-md);
+      border-left: 4px solid var(--sky);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .info-banner svg {
+      flex-shrink: 0;
+      color: var(--sky);
+      margin-top: 1px
+    }
+
+    .info-banner-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+      line-height: 1.55
+    }
+
+    .doc-list {
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px
+    }
+
+    .doc-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      border-left: 4px solid var(--slate3);
+      transition: transform 0.18s;
+    }
+
+    .doc-card.approved {
+      border-left-color: var(--sage)
+    }
+
+    .doc-card.pending {
+      border-left-color: var(--amber)
+    }
+
+    .doc-card.rejected {
+      border-left-color: var(--rose)
+    }
+
+    .doc-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px
+    }
+
+    .doc-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .doc-card-icon.approved {
+      background: var(--sage2)
+    }
+
+    .doc-card-icon.pending {
+      background: var(--amber2)
+    }
+
+    .doc-card.approved .doc-card-icon svg {
+      color: var(--sage)
+    }
+
+    .doc-card.pending .doc-card-icon svg {
+      color: var(--amber)
+    }
+
+    .doc-card-body {
+      flex: 1
+    }
+
+    .doc-card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+      line-height: 1.3
+    }
+
+    .doc-card-accepted {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    .doc-card-file {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sky);
+      margin-top: 2px
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .status-tag.approved {
+      background: var(--sage2);
+      color: var(--sage)
+    }
+
+    .status-tag.pending {
+      background: var(--amber2);
+      color: var(--amber)
+    }
+
+    .status-tag.rejected {
+      background: var(--rose2);
+      color: var(--rose)
+    }
+
+    .replace-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--slate2);
+      border: 1.5px solid var(--slate3);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .replace-btn:hover {
+      background: var(--slate3)
+    }
+
+    /* ══════════════════════════
    AGREEMENTS SCREEN
 ══════════════════════════ */
-.agr-hero{
-  background:linear-gradient(145deg,var(--navy) 0%,#0f2c5e 60%,#1a5f4a 100%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.agr-hero::before{
-  content:'';position:absolute;left:-30px;bottom:-30px;
-  width:160px;height:160px;
-  background:radial-gradient(circle,rgba(31,158,122,0.35) 0%,transparent 70%);border-radius:50%;
-}
-.agr-card{
-  background:var(--white);border-radius:var(--r-xl);
-  padding:20px;margin:0 18px 12px;
-  box-shadow:var(--shadow-card);
-  border:1.5px solid var(--slate3);
-  transition:transform 0.18s;cursor:pointer;
-}
-.agr-card:active{transform:scale(0.98)}
-.agr-card-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.agr-card-icon{
-  width:50px;height:50px;border-radius:16px;
-  background:var(--sky3);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.agr-card-icon svg{color:var(--sky)}
-.agr-card-title{font-size:16px;font-weight:800;color:var(--text-dark);margin-bottom:3px}
-.agr-card-via{font-size:12px;font-weight:600;color:var(--text-soft)}
-.agr-divider{height:1px;background:var(--slate2);margin:14px 0}
-.view-doc-btn{
-  display:flex;align-items:center;gap:8px;
-  padding:11px 20px;border-radius:12px;
-  background:var(--sky3);border:1.5px solid var(--sky2);
-  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--sky);
-  cursor:pointer;transition:background 0.15s;
-}
-.view-doc-btn:hover{background:var(--sky2)}
-.agr-empty{
-  padding:60px 18px;text-align:center;
-}
-.agr-empty svg{color:var(--slate3);margin-bottom:16px}
-.agr-empty-title{font-size:16px;font-weight:700;color:var(--text-mid);margin-bottom:8px}
-.agr-empty-sub{font-size:13px;font-weight:600;color:var(--text-soft)}
+    .agr-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #0f2c5e 60%, #1a5f4a 100%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* ══════════════════════════
+    .agr-hero::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      bottom: -30px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(31, 158, 122, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .agr-card {
+      background: var(--white);
+      border-radius: var(--r-xl);
+      padding: 20px;
+      margin: 0 18px 12px;
+      box-shadow: var(--shadow-card);
+      border: 1.5px solid var(--slate3);
+      transition: transform 0.18s;
+      cursor: pointer;
+    }
+
+    .agr-card:active {
+      transform: scale(0.98)
+    }
+
+    .agr-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px
+    }
+
+    .agr-card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: var(--sky3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .agr-card-icon svg {
+      color: var(--sky)
+    }
+
+    .agr-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 3px
+    }
+
+    .agr-card-via {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    .agr-divider {
+      height: 1px;
+      background: var(--slate2);
+      margin: 14px 0
+    }
+
+    .view-doc-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: 12px;
+      background: var(--sky3);
+      border: 1.5px solid var(--sky2);
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sky);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .view-doc-btn:hover {
+      background: var(--sky2)
+    }
+
+    .agr-empty {
+      padding: 60px 18px;
+      text-align: center;
+    }
+
+    .agr-empty svg {
+      color: var(--slate3);
+      margin-bottom: 16px
+    }
+
+    .agr-empty-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-mid);
+      margin-bottom: 8px
+    }
+
+    .agr-empty-sub {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    /* ══════════════════════════
    INVOICES SCREEN
 ══════════════════════════ */
-.inv-hero{
-  background:linear-gradient(145deg,var(--navy) 0%,#1a3060 60%,#a0380a 140%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.inv-hero::before{
-  content:'';position:absolute;right:-20px;top:20px;
-  width:160px;height:160px;
-  background:radial-gradient(circle,rgba(212,128,10,0.35) 0%,transparent 70%);border-radius:50%;
-}
-.inv-tab-row{display:flex;gap:0;margin:14px 18px 0;background:rgba(255,255,255,0.12);border-radius:14px;padding:4px}
-.inv-tab{
-  flex:1;padding:11px;border-radius:11px;border:none;background:transparent;
-  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,0.65);
-  cursor:pointer;transition:all 0.2s;
-}
-.inv-tab.active{background:rgba(255,255,255,0.95);color:var(--navy);box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+    .inv-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #1a3060 60%, #a0380a 140%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Form section */
-.form-section{background:var(--white);margin:14px 18px 0;border-radius:var(--r-xl);padding:18px;box-shadow:var(--shadow-card)}
-.form-section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.form-section-header svg{color:var(--sky)}
-.form-section-title{font-size:14px;font-weight:800;color:var(--text-dark)}
-.provider-chip{
-  display:flex;align-items:center;gap:8px;
-  background:var(--sky3);border-radius:12px;padding:10px 14px;margin-bottom:12px;
-}
-.provider-chip svg{color:var(--sky)}
-.provider-chip-text{font-size:13px;font-weight:700;color:var(--navy)}
-.provider-chip-name{color:var(--sky);font-weight:800}
-.form-field{margin-bottom:12px;position:relative}
-.form-label{font-size:11px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;display:block}
-.form-input{
-  width:100%;padding:13px 16px;
-  border:2px solid var(--slate3);border-radius:12px;
-  font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--text-dark);
-  background:var(--bg);outline:none;transition:border-color 0.18s;
-}
-.form-input:focus{border-color:var(--sky)}
+    .inv-hero::before {
+      content: '';
+      position: absolute;
+      right: -20px;
+      top: 20px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(212, 128, 10, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+    }
 
-.line-items-head{display:flex;align-items:center;justify-content:space-between;margin:0 18px 8px}
-.add-row-btn{
-  display:flex;align-items:center;gap:6px;
-  padding:9px 16px;border-radius:12px;
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#fff;
-  cursor:pointer;box-shadow:0 4px 12px rgba(13,31,78,0.25);
-}
-.line-item-card{
-  background:var(--white);border-radius:var(--r-lg);padding:16px;
-  margin:0 18px 10px;box-shadow:var(--shadow-card);
-  border-top:3px solid var(--sky);
-}
-.item-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  background:var(--sky3);color:var(--sky);
-  padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;margin-bottom:12px;
-}
-.recent-inv-list{padding:0 18px;display:flex;flex-direction:column;gap:8px}
-.recent-inv-card{
-  background:var(--white);border-radius:var(--r-lg);padding:14px 16px;
-  display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-card);cursor:pointer;
-  border-left:3px solid var(--sky);transition:transform 0.18s;
-}
-.recent-inv-card:active{transform:scale(0.98)}
-.inv-icon-wrap{
-  width:40px;height:40px;border-radius:12px;background:var(--sky3);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.inv-icon-wrap svg{color:var(--sky)}
-.inv-body{flex:1}
-.inv-id{font-size:15px;font-weight:800;color:var(--text-dark)}
-.inv-client{font-size:12px;font-weight:600;color:var(--text-soft);margin-top:1px}
-.inv-manager{font-size:11px;font-weight:600;color:var(--text-soft);font-style:italic}
-.submitted-tag{
-  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;
-  background:var(--sky3);color:var(--sky);text-transform:uppercase;letter-spacing:0.4px;
-}
+    .inv-tab-row {
+      display: flex;
+      gap: 0;
+      margin: 14px 18px 0;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 4px
+    }
 
-/* ══════════════════════════
+    .inv-tab {
+      flex: 1;
+      padding: 11px;
+      border-radius: 11px;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.65);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .inv-tab.active {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--navy);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2)
+    }
+
+    /* Form section */
+    .form-section {
+      background: var(--white);
+      margin: 14px 18px 0;
+      border-radius: var(--r-xl);
+      padding: 18px;
+      box-shadow: var(--shadow-card)
+    }
+
+    .form-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .form-section-header svg {
+      color: var(--sky)
+    }
+
+    .form-section-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark)
+    }
+
+    .provider-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--sky3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .provider-chip svg {
+      color: var(--sky)
+    }
+
+    .provider-chip-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy)
+    }
+
+    .provider-chip-name {
+      color: var(--sky);
+      font-weight: 800
+    }
+
+    .form-field {
+      margin-bottom: 12px;
+      position: relative
+    }
+
+    .form-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      display: block
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid var(--slate3);
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .form-input:focus {
+      border-color: var(--sky)
+    }
+
+    .line-items-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 18px 8px
+    }
+
+    .add-row-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(13, 31, 78, 0.25);
+    }
+
+    .line-item-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      margin: 0 18px 10px;
+      box-shadow: var(--shadow-card);
+      border-top: 3px solid var(--sky);
+    }
+
+    .item-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--sky3);
+      color: var(--sky);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .recent-inv-list {
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .recent-inv-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+      border-left: 3px solid var(--sky);
+      transition: transform 0.18s;
+    }
+
+    .recent-inv-card:active {
+      transform: scale(0.98)
+    }
+
+    .inv-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--sky3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .inv-icon-wrap svg {
+      color: var(--sky)
+    }
+
+    .inv-body {
+      flex: 1
+    }
+
+    .inv-id {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-dark)
+    }
+
+    .inv-client {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin-top: 1px
+    }
+
+    .inv-manager {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft);
+      font-style: italic
+    }
+
+    .submitted-tag {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      background: var(--sky3);
+      color: var(--sky);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* ══════════════════════════
    SERVICES SCREEN
 ══════════════════════════ */
-.serv-hero{
-  background:linear-gradient(145deg,var(--navy) 0%,#163260 60%,#0e5c4a 100%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.serv-hero::before{
-  content:'';position:absolute;right:-20px;bottom:-20px;
-  width:160px;height:160px;
-  background:radial-gradient(circle,rgba(31,158,122,0.4) 0%,transparent 70%);border-radius:50%;
-}
-.request-change-btn{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  margin:16px 18px 0;padding:14px;
-  background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);
-  border:1.5px solid rgba(255,255,255,0.3);
-  border-radius:var(--r-lg);font-family:'Nunito',sans-serif;
-  font-size:14px;font-weight:700;color:#fff;cursor:pointer;
-  transition:background 0.18s;width:calc(100% - 36px);
-}
-.service-card{
-  background:var(--white);border-radius:var(--r-xl);
-  padding:20px;margin:14px 18px 0;
-  box-shadow:var(--shadow-card);border:1.5px solid var(--slate3);
-}
-.service-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.service-card-left{display:flex;align-items:center;gap:12px}
-.service-icon{
-  width:48px;height:48px;border-radius:16px;
-  background:var(--sage2);
-  display:flex;align-items:center;justify-content:center;
-}
-.service-icon svg{color:var(--sage)}
-.service-name{font-size:15px;font-weight:800;color:var(--text-dark);line-height:1.3}
-.active-badge{
-  padding:5px 14px;border-radius:20px;background:var(--sage2);
-  font-size:12px;font-weight:800;color:var(--sage);
-  text-transform:uppercase;letter-spacing:0.4px;
-}
-.service-details-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.service-detail{background:var(--bg);border-radius:12px;padding:12px 14px}
-.service-detail-label{font-size:10px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.service-detail-val{font-size:15px;font-weight:800;color:var(--text-dark)}
+    .serv-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #163260 60%, #0e5c4a 100%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* ══════════════════════════
+    .serv-hero::before {
+      content: '';
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(31, 158, 122, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .request-change-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 18px 0;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--r-lg);
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.18s;
+      width: calc(100% - 36px);
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: var(--r-xl);
+      padding: 20px;
+      margin: 14px 18px 0;
+      box-shadow: var(--shadow-card);
+      border: 1.5px solid var(--slate3);
+    }
+
+    .service-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px
+    }
+
+    .service-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--sage2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-icon svg {
+      color: var(--sage)
+    }
+
+    .service-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.3
+    }
+
+    .active-badge {
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--sage2);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--sage);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .service-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px
+    }
+
+    .service-detail {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px 14px
+    }
+
+    .service-detail-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px
+    }
+
+    .service-detail-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-dark)
+    }
+
+    /* ══════════════════════════
    FLOATING BOTTOM NAV
 ══════════════════════════ */
-.bottom-nav{
-  position:absolute;bottom:16px;left:12px;right:12px;
-  background:rgba(13,31,78,0.92);backdrop-filter:blur(20px) saturate(180%);
-  border-radius:28px;
-  display:flex;align-items:center;justify-content:space-around;
-  padding:10px 8px 12px;
-  box-shadow:0 8px 32px rgba(13,31,78,0.4),0 2px 8px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
-  z-index:50;
-  border:1px solid rgba(255,255,255,0.1);
-}
-.nav-item{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:6px 12px;border-radius:18px;cursor:pointer;
-  border:none;background:transparent;flex:1;
-  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
-}
-.nav-item.active{background:linear-gradient(135deg,var(--sky),#2a8fe8);box-shadow:0 4px 14px rgba(47,127,216,0.45)}
-.nav-item.center-item{
-  background:linear-gradient(135deg,var(--sage),#27c49a);
-  border-radius:22px;padding:10px 16px 6px;
-  box-shadow:0 6px 20px rgba(31,158,122,0.45);
-  margin-top:-12px;
-}
-.nav-item.center-item.active{background:linear-gradient(135deg,#16b88a,#1fd4b0)}
-.nav-icon-wrap{
-  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
-}
-.nav-item svg{color:rgba(255,255,255,0.45);transition:color 0.18s}
-.nav-item.active svg,.nav-item.center-item svg{color:#fff}
-.nav-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);transition:color 0.18s;letter-spacing:0.3px}
-.nav-item.active .nav-label,.nav-item.center-item .nav-label{color:#fff}
+    .bottom-nav {
+      position: absolute;
+      bottom: 16px;
+      left: 12px;
+      right: 12px;
+      background: rgba(13, 31, 78, 0.92);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 8px 12px;
+      box-shadow: 0 8px 32px rgba(13, 31, 78, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      z-index: 50;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-/* ══════════════════════════
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 18px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      flex: 1;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--sky), #2a8fe8);
+      box-shadow: 0 4px 14px rgba(47, 127, 216, 0.45)
+    }
+
+    .nav-item.center-item {
+      background: linear-gradient(135deg, var(--sage), #27c49a);
+      border-radius: 22px;
+      padding: 10px 16px 6px;
+      box-shadow: 0 6px 20px rgba(31, 158, 122, 0.45);
+      margin-top: -12px;
+    }
+
+    .nav-item.center-item.active {
+      background: linear-gradient(135deg, #16b88a, #1fd4b0)
+    }
+
+    .nav-icon-wrap {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-item svg {
+      color: rgba(255, 255, 255, 0.45);
+      transition: color 0.18s
+    }
+
+    .nav-item.active svg,
+    .nav-item.center-item svg {
+      color: #fff
+    }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.4);
+      transition: color 0.18s;
+      letter-spacing: 0.3px
+    }
+
+    .nav-item.active .nav-label,
+    .nav-item.center-item .nav-label {
+      color: #fff
+    }
+
+    /* ══════════════════════════
    DASHBOARD SCREEN EXTRAS
 ══════════════════════════ */
-.dash-hero{
-  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 60%,var(--sky) 140%);
-  padding:48px 22px 28px;flex-shrink:0;position:relative;overflow:hidden;
-}
-.dash-hero::before{
-  content:'';position:absolute;right:-40px;top:-30px;
-  width:200px;height:200px;
-  background:radial-gradient(circle,rgba(47,127,216,0.3) 0%,transparent 70%);border-radius:50%;
-}
-.dash-hero::after{
-  content:'';position:absolute;left:20px;bottom:-30px;
-  width:140px;height:140px;
-  background:radial-gradient(circle,rgba(31,158,122,0.25) 0%,transparent 70%);border-radius:50%;
-}
-.dash-onboarding{
-  background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);
-  border-radius:var(--r-lg);padding:14px 16px;
-  display:flex;align-items:center;gap:12px;margin-top:16px;
-  border:1px solid rgba(255,255,255,0.2);position:relative;z-index:2;
-}
-.dash-onboard-icon{
-  width:40px;height:40px;border-radius:12px;
-  background:rgba(255,255,255,0.2);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.dash-onboard-text{flex:1}
-.dash-onboard-label{font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
-.dash-onboard-val{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
-.dash-prog-track{height:8px;background:rgba(255,255,255,0.2);border-radius:4px;overflow:hidden}
-.dash-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#5DF5A0,#2FC9FF)}
-.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px;margin-bottom:4px}
-.status-card{
-  background:var(--white);border-radius:var(--r-lg);padding:16px 14px;
-  box-shadow:var(--shadow-card);
-}
-.status-card-icon-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.status-card-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center}
-.status-card-badge{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px}
-.status-card-label{font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px}
-.status-card-value{font-size:17px;font-weight:900;color:var(--text-dark);line-height:1.1}
-.welcome-banner{
-  margin:0 18px 10px;border-radius:var(--r-xl);overflow:hidden;
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  padding:20px;box-shadow:var(--shadow-float);position:relative;
-}
-.welcome-banner::after{
-  content:'';position:absolute;right:0;bottom:0;top:0;
-  width:120px;
-  background:linear-gradient(135deg,transparent,rgba(47,127,216,0.2));
-}
-.welcome-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(93,245,160,0.2);border:1px solid rgba(93,245,160,0.4);
-  color:#5DF5A0;padding:5px 12px;border-radius:20px;
-  font-size:11px;font-weight:800;margin-bottom:10px;
-}
-.welcome-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.25}
-.welcome-sub{font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);line-height:1.5}
+    .dash-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, var(--navy2) 60%, var(--sky) 140%);
+      padding: 48px 22px 28px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* ── SNAP FORMS CARD ── */
-.snap-card{
-  background:var(--white);border-radius:var(--r-lg);
-  padding:16px;margin:0 18px 10px;
-  box-shadow:var(--shadow-card);
-  display:flex;align-items:center;gap:12px;
-}
-.snap-icon{
-  width:44px;height:44px;border-radius:14px;
-  background:linear-gradient(135deg,#4CAF50,#2E7D32);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.snap-body{flex:1}
-.snap-title{font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:2px}
-.snap-sub{font-size:12px;font-weight:600;color:var(--text-soft)}
-.snap-badge{
-  padding:5px 12px;border-radius:20px;background:var(--sage2);
-  font-size:11px;font-weight:800;color:var(--sage);
-}
-.provider-id-chip{
-  background:var(--slate2);border-radius:12px;padding:10px 14px;
-  margin:0 18px 14px;
-  display:flex;align-items:center;gap:8px;
-}
-.provider-id-chip svg{color:var(--text-soft);flex-shrink:0}
-.provider-id-text{font-size:11px;font-weight:600;color:var(--text-soft);word-break:break-all}
+    .dash-hero::before {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -30px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(47, 127, 216, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
 
-/* DESKTOP RESPONSIVE */
-@media(min-width:900px){
-  body{padding:40px 32px;align-items:flex-start;padding-top:40px}
-  .device{
-    width:420px;height:900px;
-    border-radius:52px;
-  }
-  body::before{
-    content:'Sensible Care · Provider Portal';
-    position:fixed;top:20px;left:50%;transform:translateX(-50%);
-    font-family:'Playfair Display',serif;font-size:14px;color:rgba(255,255,255,0.4);
-    letter-spacing:1px;z-index:10;
-  }
-}
-@media(min-width:1200px){
-  body{justify-content:center}
-}
-</style>
+    .dash-hero::after {
+      content: '';
+      position: absolute;
+      left: 20px;
+      bottom: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(31, 158, 122, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .dash-onboarding {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .dash-onboard-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dash-onboard-text {
+      flex: 1
+    }
+
+    .dash-onboard-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px
+    }
+
+    .dash-onboard-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px
+    }
+
+    .dash-prog-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden
+    }
+
+    .dash-prog-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #5DF5A0, #2FC9FF)
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 18px;
+      margin-bottom: 4px
+    }
+
+    .status-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px 14px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .status-card-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px
+    }
+
+    .status-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .status-card-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px
+    }
+
+    .status-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 3px
+    }
+
+    .status-card-value {
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.1
+    }
+
+    .welcome-banner {
+      margin: 0 18px 10px;
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      padding: 20px;
+      box-shadow: var(--shadow-float);
+      position: relative;
+    }
+
+    .welcome-banner::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      width: 120px;
+      background: linear-gradient(135deg, transparent, rgba(47, 127, 216, 0.2));
+    }
+
+    .welcome-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(93, 245, 160, 0.2);
+      border: 1px solid rgba(93, 245, 160, 0.4);
+      color: #5DF5A0;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .welcome-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.25
+    }
+
+    .welcome-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5
+    }
+
+    /* ── SNAP FORMS CARD ── */
+    .snap-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      margin: 0 18px 10px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .snap-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .snap-body {
+      flex: 1
+    }
+
+    .snap-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 2px
+    }
+
+    .snap-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft)
+    }
+
+    .snap-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--sage2);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--sage);
+    }
+
+    .provider-id-chip {
+      background: var(--slate2);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin: 0 18px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .provider-id-chip svg {
+      color: var(--text-soft);
+      flex-shrink: 0
+    }
+
+    .provider-id-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft);
+      word-break: break-all
+    }
+
+    /* DESKTOP RESPONSIVE */
+    @media(min-width:900px) {
+      body::before {
+        content: '';
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Playfair Display', serif;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.4);
+        letter-spacing: 1px;
+        z-index: 10;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="device" id="app">
-  <div class="notch"></div>
+  <div class="device" id="app">
+    <div class="notch"></div>
 
-  <!-- ══════════════ SCREEN: DASHBOARD ══════════════ -->
-  <div class="screen active" id="s-dashboard" style="flex-direction:column;overflow:hidden;">
-    <div class="dash-hero">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
-        <div class="hero-avatar">SC</div>
-      </div>
-      <div style="position:relative;z-index:2">
-        <div class="hero-greeting">Welcome back,</div>
-        <div class="hero-name" style="font-size:22px">Sensible Care Services</div>
-      </div>
-      <div class="dash-onboarding">
-        <div class="dash-onboard-icon">
-          <i data-lucide="trending-up" style="width:20px;height:20px;color:#fff"></i>
+    <!-- ══════════════ SCREEN: DASHBOARD ══════════════ -->
+    <div class="screen active" id="s-dashboard" style="flex-direction:column;overflow:hidden;">
+      <div class="dash-hero">
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
+          <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+          <div class="hero-avatar">SC</div>
         </div>
-        <div class="dash-onboard-text">
-          <div class="dash-onboard-label">Onboarding Progress</div>
-          <div class="dash-onboard-val">65% Complete · Step 2 of 5</div>
-          <div class="dash-prog-track">
-            <div class="dash-prog-fill" style="width:65%"></div>
+        <div style="position:relative;z-index:2">
+          <div class="hero-greeting">Welcome back,</div>
+          <div class="hero-name" style="font-size:22px">Sensible Care Services</div>
+        </div>
+        <div class="dash-onboarding">
+          <div class="dash-onboard-icon">
+            <i data-lucide="trending-up" style="width:20px;height:20px;color:#fff"></i>
+          </div>
+          <div class="dash-onboard-text">
+            <div class="dash-onboard-label">Onboarding Progress</div>
+            <div class="dash-onboard-val">65% Complete · Step 2 of 5</div>
+            <div class="dash-prog-track">
+              <div class="dash-prog-fill" style="width:65%"></div>
+            </div>
+          </div>
+          <span style="font-size:20px;font-weight:900;color:#5DF5A0">65%</span>
+        </div>
+      </div>
+      <svg style="height:28px;flex-shrink:0;background:var(--navy2)" viewBox="0 0 390 28" preserveAspectRatio="none">
+        <path d="M0,28 C90,2 200,28 280,14 C360,0 390,20 390,14 L390,28 Z" fill="var(--bg)" />
+      </svg>
+
+      <div class="scroll-body">
+        <!-- Welcome Banner -->
+        <div style="height:16px"></div>
+        <div class="welcome-banner">
+          <div class="welcome-badge">
+            <i data-lucide="badge-check" style="width:12px;height:12px"></i>
+            Verified Provider
+          </div>
+          <div class="welcome-title">Welcome to Sensible Care</div>
+          <div class="welcome-sub">Your provider account is active. Explore your registration status, handle upcoming
+            compliance tasks, and manage services effortlessly.</div>
+        </div>
+
+        <!-- Account Overview -->
+        <div class="sec-head">
+          <div class="sec-title"><i data-lucide="layout-grid" style="width:14px;height:14px"></i> Account Overview</div>
+        </div>
+        <div class="status-grid">
+          <div class="status-card">
+            <div class="status-card-icon-row">
+              <div class="status-card-icon" style="background:var(--sky3)"><i data-lucide="building-2"
+                  style="width:20px;height:20px;color:var(--sky)"></i></div>
+              <span class="status-card-badge" style="background:var(--sky3);color:var(--sky)">Active</span>
+            </div>
+            <div class="status-card-label">Account Type</div>
+            <div class="status-card-value">Provider</div>
+          </div>
+          <div class="status-card">
+            <div class="status-card-icon-row">
+              <div class="status-card-icon" style="background:var(--amber2)"><i data-lucide="loader"
+                  style="width:20px;height:20px;color:var(--amber)"></i></div>
+              <span class="status-card-badge" style="background:var(--amber2);color:var(--amber)">65%</span>
+            </div>
+            <div class="status-card-label">Onboarding</div>
+            <div class="status-card-value">In Progress</div>
+          </div>
+          <div class="status-card">
+            <div class="status-card-icon-row">
+              <div class="status-card-icon" style="background:var(--amber2)"><i data-lucide="folder-open"
+                  style="width:20px;height:20px;color:var(--amber)"></i></div>
+              <span class="status-card-badge" style="background:var(--amber2);color:var(--amber)">Due</span>
+            </div>
+            <div class="status-card-label">Compliance</div>
+            <div class="status-card-value">Pending</div>
+          </div>
+          <div class="status-card">
+            <div class="status-card-icon-row">
+              <div class="status-card-icon" style="background:var(--sage2)"><i data-lucide="file-check-2"
+                  style="width:20px;height:20px;color:var(--sage)"></i></div>
+              <span class="status-card-badge" style="background:var(--sage2);color:var(--sage)">Done</span>
+            </div>
+            <div class="status-card-label">Agreements</div>
+            <div class="status-card-value">Completed ✓</div>
           </div>
         </div>
-        <span style="font-size:20px;font-weight:900;color:#5DF5A0">65%</span>
-      </div>
-    </div>
-    <svg style="height:28px;flex-shrink:0;background:var(--navy2)" viewBox="0 0 390 28" preserveAspectRatio="none">
-      <path d="M0,28 C90,2 200,28 280,14 C360,0 390,20 390,14 L390,28 Z" fill="var(--bg)"/>
-    </svg>
 
-    <div class="scroll-body">
-      <!-- Welcome Banner -->
-      <div style="height:16px"></div>
-      <div class="welcome-banner">
-        <div class="welcome-badge">
-          <i data-lucide="badge-check" style="width:12px;height:12px"></i>
-          Verified Provider
+        <!-- Quick Actions -->
+        <div class="sec-head" style="margin-top:16px">
+          <div class="sec-title"><i data-lucide="zap" style="width:14px;height:14px"></i> Quick Actions</div>
         </div>
-        <div class="welcome-title">Welcome to Sensible Care</div>
-        <div class="welcome-sub">Your provider account is active. Explore your registration status, handle upcoming compliance tasks, and manage services effortlessly.</div>
-      </div>
-
-      <!-- Account Overview -->
-      <div class="sec-head">
-        <div class="sec-title"><i data-lucide="layout-grid" style="width:14px;height:14px"></i> Account Overview</div>
-      </div>
-      <div class="status-grid">
-        <div class="status-card">
-          <div class="status-card-icon-row">
-            <div class="status-card-icon" style="background:var(--sky3)"><i data-lucide="building-2" style="width:20px;height:20px;color:var(--sky)"></i></div>
-            <span class="status-card-badge" style="background:var(--sky3);color:var(--sky)">Active</span>
+        <button class="action-btn primary" onclick="showScreen('compliance')">
+          <div class="action-btn-icon"><i data-lucide="shield-check" style="width:22px;height:22px;color:#fff"></i>
           </div>
-          <div class="status-card-label">Account Type</div>
-          <div class="status-card-value">Provider</div>
-        </div>
-        <div class="status-card">
-          <div class="status-card-icon-row">
-            <div class="status-card-icon" style="background:var(--amber2)"><i data-lucide="loader" style="width:20px;height:20px;color:var(--amber)"></i></div>
-            <span class="status-card-badge" style="background:var(--amber2);color:var(--amber)">65%</span>
+          <div class="action-btn-body">
+            <div class="action-btn-title">Compliance</div>
+            <div class="action-btn-sub">Upload certificates & documents</div>
           </div>
-          <div class="status-card-label">Onboarding</div>
-          <div class="status-card-value">In Progress</div>
-        </div>
-        <div class="status-card">
-          <div class="status-card-icon-row">
-            <div class="status-card-icon" style="background:var(--amber2)"><i data-lucide="folder-open" style="width:20px;height:20px;color:var(--amber)"></i></div>
-            <span class="status-card-badge" style="background:var(--amber2);color:var(--amber)">Due</span>
-          </div>
-          <div class="status-card-label">Compliance</div>
-          <div class="status-card-value">Pending</div>
-        </div>
-        <div class="status-card">
-          <div class="status-card-icon-row">
-            <div class="status-card-icon" style="background:var(--sage2)"><i data-lucide="file-check-2" style="width:20px;height:20px;color:var(--sage)"></i></div>
-            <span class="status-card-badge" style="background:var(--sage2);color:var(--sage)">Done</span>
-          </div>
-          <div class="status-card-label">Agreements</div>
-          <div class="status-card-value">Completed ✓</div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="sec-head" style="margin-top:16px">
-        <div class="sec-title"><i data-lucide="zap" style="width:14px;height:14px"></i> Quick Actions</div>
-      </div>
-      <button class="action-btn primary" onclick="showScreen('compliance')">
-        <div class="action-btn-icon"><i data-lucide="shield-check" style="width:22px;height:22px;color:#fff"></i></div>
-        <div class="action-btn-body">
-          <div class="action-btn-title">Compliance</div>
-          <div class="action-btn-sub">Upload certificates & documents</div>
-        </div>
-        <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
-      </button>
-      <button class="action-btn teal" onclick="showScreen('services')">
-        <div class="action-btn-icon"><i data-lucide="briefcase-medical" style="width:22px;height:22px;color:#fff"></i></div>
-        <div class="action-btn-body">
-          <div class="action-btn-title">Services</div>
-          <div class="action-btn-sub">Update service details</div>
-        </div>
-        <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
-      </button>
-      <button class="action-btn amber" onclick="showScreen('invoices')">
-        <div class="action-btn-icon"><i data-lucide="receipt" style="width:22px;height:22px;color:#fff"></i></div>
-        <div class="action-btn-body">
-          <div class="action-btn-title">Invoices</div>
-          <div class="action-btn-sub">Submit and track invoices</div>
-        </div>
-        <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
-      </button>
-      <button class="action-btn outline" onclick="showScreen('agreements')">
-        <div class="action-btn-icon"><i data-lucide="file-signature" style="width:22px;height:22px;color:var(--sky)"></i></div>
-        <div class="action-btn-body">
-          <div class="action-btn-title">Agreements</div>
-          <div class="action-btn-sub">View contracts</div>
-        </div>
-        <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:var(--slate)"></i>
-      </button>
-
-      <!-- SnapForms -->
-      <div class="sec-head" style="margin-top:16px">
-        <div class="sec-title"><i data-lucide="message-square-text" style="width:14px;height:14px"></i> SnapForms Status</div>
-      </div>
-      <div class="snap-card">
-        <div class="snap-icon"><i data-lucide="check-circle" style="width:22px;height:22px;color:#fff"></i></div>
-        <div class="snap-body">
-          <div class="snap-title">Onboarding Form</div>
-          <div class="snap-sub">Submitted: 2026-05-20 · 06:51 UTC</div>
-        </div>
-        <span class="snap-badge">Completed ✓</span>
-      </div>
-      <div class="provider-id-chip">
-        <i data-lucide="info" style="width:14px;height:14px"></i>
-        <span class="provider-id-text">Provider ID: 81d8f346-a493-46f1-abd0-4c225c1064c3</span>
-      </div>
-
-      <!-- Recent Activity -->
-      <div class="sec-head">
-        <div class="sec-title"><i data-lucide="activity" style="width:14px;height:14px"></i> Recent Activity</div>
-      </div>
-      <div class="activity-list">
-        <div class="activity-item">
-          <div class="activity-dot" style="background:var(--sky3)"><i data-lucide="user-plus" style="width:18px;height:18px;color:var(--sky)"></i></div>
-          <div class="activity-body">
-            <div class="activity-title">Account created successfully</div>
-            <div class="activity-time">2 hours ago</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:var(--sage2)"><i data-lucide="check-circle-2" style="width:18px;height:18px;color:var(--sage)"></i></div>
-          <div class="activity-body">
-            <div class="activity-title">Onboarding step 1 completed</div>
-            <div class="activity-time">1 hour ago</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:var(--amber2)"><i data-lucide="refresh-cw" style="width:18px;height:18px;color:var(--amber)"></i></div>
-          <div class="activity-body">
-            <div class="activity-title">Document verification in progress</div>
-            <div class="activity-time">Just now</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Nav -->
-        <div class="bottom-nav">
-      <button class="nav-item" onclick="showScreen('services')">
-        <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Services</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('compliance')">
-        <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Docs</span>
-      </button>
-      <button class="nav-item center-item active" onclick="showScreen('dashboard')">
-        <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('agreements')">
-        <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Agreements</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('invoices')">
-        <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Invoices</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ══════════════ SCREEN: COMPLIANCE ══════════════ -->
-  <div class="screen" id="s-compliance" style="flex-direction:column;overflow:hidden;">
-    <div class="comp-hero">
-      <div class="comp-hero-topbar">
-        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
-        <div class="hero-avatar">SC</div>
-      </div>
-      <div class="comp-hero-title">Compliance Documents</div>
-      <div class="comp-hero-sub">View requested compliance documents and upload files.</div>
-      <div class="comp-stats-row">
-        <div class="comp-stat-pill">
-          <div class="comp-stat-num">4</div>
-          <div class="comp-stat-lbl">Requested</div>
-        </div>
-        <div class="comp-stat-pill">
-          <div class="comp-stat-num">4</div>
-          <div class="comp-stat-lbl">Uploaded</div>
-        </div>
-        <div class="comp-stat-pill">
-          <div class="comp-stat-num" style="color:#5DF5A0">4</div>
-          <div class="comp-stat-lbl">Approved</div>
-        </div>
-      </div>
-    </div>
-    <svg style="height:28px;flex-shrink:0;background:var(--violet)" viewBox="0 0 390 28" preserveAspectRatio="none">
-      <path d="M0,0 C90,28 200,0 280,14 C360,28 390,8 390,14 L390,28 L0,28 Z" fill="var(--bg)"/>
-    </svg>
-
-    <div class="scroll-body">
-      <button class="bulk-upload-btn">
-        <i data-lucide="cloud-upload" style="width:20px;height:20px"></i>
-        Bulk Upload Documents
-      </button>
-
-      <div class="tab-row">
-        <button class="tab-btn active" id="tab-requested" onclick="switchCompTab('requested')">
-          Requested (4)
+          <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
         </button>
-        <button class="tab-btn" id="tab-uploaded" onclick="switchCompTab('uploaded')">
-          Uploaded (4)
+        <button class="action-btn teal" onclick="showScreen('services')">
+          <div class="action-btn-icon"><i data-lucide="briefcase-medical" style="width:22px;height:22px;color:#fff"></i>
+          </div>
+          <div class="action-btn-body">
+            <div class="action-btn-title">Services</div>
+            <div class="action-btn-sub">Update service details</div>
+          </div>
+          <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
+        </button>
+        <button class="action-btn amber" onclick="showScreen('invoices')">
+          <div class="action-btn-icon"><i data-lucide="receipt" style="width:22px;height:22px;color:#fff"></i></div>
+          <div class="action-btn-body">
+            <div class="action-btn-title">Invoices</div>
+            <div class="action-btn-sub">Submit and track invoices</div>
+          </div>
+          <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:#fff"></i>
+        </button>
+        <button class="action-btn outline" onclick="showScreen('agreements')">
+          <div class="action-btn-icon"><i data-lucide="file-signature"
+              style="width:22px;height:22px;color:var(--sky)"></i></div>
+          <div class="action-btn-body">
+            <div class="action-btn-title">Agreements</div>
+            <div class="action-btn-sub">View contracts</div>
+          </div>
+          <i data-lucide="chevron-right" class="action-arrow" style="width:20px;height:20px;color:var(--slate)"></i>
+        </button>
+
+        <!-- SnapForms -->
+        <div class="sec-head" style="margin-top:16px">
+          <div class="sec-title"><i data-lucide="message-square-text" style="width:14px;height:14px"></i> SnapForms
+            Status</div>
+        </div>
+        <div class="snap-card">
+          <div class="snap-icon"><i data-lucide="check-circle" style="width:22px;height:22px;color:#fff"></i></div>
+          <div class="snap-body">
+            <div class="snap-title">Onboarding Form</div>
+            <div class="snap-sub">Submitted: 2026-05-20 · 06:51 UTC</div>
+          </div>
+          <span class="snap-badge">Completed ✓</span>
+        </div>
+        <div class="provider-id-chip">
+          <i data-lucide="info" style="width:14px;height:14px"></i>
+          <span class="provider-id-text">Provider ID: 81d8f346-a493-46f1-abd0-4c225c1064c3</span>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="sec-head">
+          <div class="sec-title"><i data-lucide="activity" style="width:14px;height:14px"></i> Recent Activity</div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot" style="background:var(--sky3)"><i data-lucide="user-plus"
+                style="width:18px;height:18px;color:var(--sky)"></i></div>
+            <div class="activity-body">
+              <div class="activity-title">Account created successfully</div>
+              <div class="activity-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:var(--sage2)"><i data-lucide="check-circle-2"
+                style="width:18px;height:18px;color:var(--sage)"></i></div>
+            <div class="activity-body">
+              <div class="activity-title">Onboarding step 1 completed</div>
+              <div class="activity-time">1 hour ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:var(--amber2)"><i data-lucide="refresh-cw"
+                style="width:18px;height:18px;color:var(--amber)"></i></div>
+            <div class="activity-body">
+              <div class="activity-title">Document verification in progress</div>
+              <div class="activity-time">Just now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('services')">
+          <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Services</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('compliance')">
+          <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Docs</span>
+        </button>
+        <button class="nav-item center-item active" onclick="showScreen('dashboard')">
+          <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('agreements')">
+          <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Agreements</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('invoices')">
+          <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Invoices</span>
         </button>
       </div>
-
-      <div class="info-banner" style="margin-bottom:0">
-        <i data-lucide="info" style="width:16px;height:16px"></i>
-        <div class="info-banner-text">Please upload the requested compliance documents: <strong>ABN, AHPRA Registration, Australian Driver's Licence, Business Insurance – Public Liability</strong></div>
-      </div>
-
-      <div class="doc-list">
-        <!-- Doc 1 -->
-        <div class="doc-card approved">
-          <div class="doc-card-header">
-            <div class="doc-card-icon approved"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-            <div class="doc-card-body">
-              <div class="doc-card-title">Business Insurance — Public Liability</div>
-              <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
-              <div class="doc-card-file">📄 help.png</div>
-            </div>
-          </div>
-          <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i> Approved</span>
-          <button class="replace-btn">Replace Document</button>
-        </div>
-        <!-- Doc 2 -->
-        <div class="doc-card approved">
-          <div class="doc-card-header">
-            <div class="doc-card-icon approved"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div>
-            <div class="doc-card-body">
-              <div class="doc-card-title">Australian Driver's Licence</div>
-              <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
-              <div class="doc-card-file">📄 members.png</div>
-            </div>
-          </div>
-          <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i> Approved</span>
-          <button class="replace-btn">Replace Document</button>
-        </div>
-        <!-- Doc 3 -->
-        <div class="doc-card approved">
-          <div class="doc-card-header">
-            <div class="doc-card-icon approved"><i data-lucide="stethoscope" style="width:20px;height:20px"></i></div>
-            <div class="doc-card-body">
-              <div class="doc-card-title">AHPRA — Allied Health Practitioner Registration</div>
-              <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
-              <div class="doc-card-file">📄 invoice.png</div>
-            </div>
-          </div>
-          <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i> Approved</span>
-          <button class="replace-btn">Replace Document</button>
-        </div>
-        <!-- Doc 4 -->
-        <div class="doc-card approved">
-          <div class="doc-card-header">
-            <div class="doc-card-icon approved"><i data-lucide="building" style="width:20px;height:20px"></i></div>
-            <div class="doc-card-body">
-              <div class="doc-card-title">ABN — Australian Business Number</div>
-              <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
-              <div class="doc-card-file">📄 invoice.png</div>
-            </div>
-          </div>
-          <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i> Approved</span>
-          <button class="replace-btn">Replace Document</button>
-        </div>
-      </div>
     </div>
 
-        <div class="bottom-nav">
-      <button class="nav-item" onclick="showScreen('services')">
-        <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Services</span>
-      </button>
-      <button class="nav-item active" onclick="showScreen('compliance')">
-        <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Docs</span>
-      </button>
-      <button class="nav-item center-item" onclick="showScreen('dashboard')">
-        <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('agreements')">
-        <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Agreements</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('invoices')">
-        <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Invoices</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ══════════════ SCREEN: AGREEMENTS ══════════════ -->
-  <div class="screen" id="s-agreements" style="flex-direction:column;overflow:hidden;">
-    <div class="agr-hero">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2">
-        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
-        <div class="hero-avatar">SC</div>
-      </div>
-      <div style="position:relative;z-index:2">
-        <div class="hero-greeting">View and manage your</div>
-        <div class="hero-name" style="font-size:22px">My Agreements</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600">Signed contracts and active service agreements</div>
-      </div>
-    </div>
-    <svg style="height:28px;flex-shrink:0;background:#1a5f4a" viewBox="0 0 390 28" preserveAspectRatio="none">
-      <path d="M0,0 C100,28 250,0 390,14 L390,28 L0,28 Z" fill="var(--bg)"/>
-    </svg>
-
-    <div class="scroll-body">
-      <div style="height:16px"></div>
-
-      <div class="sec-head">
-        <div class="sec-title"><i data-lucide="file-text" style="width:14px;height:14px"></i> Active Agreements</div>
-        <span class="sec-more">1 document</span>
-      </div>
-
-      <div class="agr-card">
-        <div class="agr-card-header">
-          <div class="agr-card-icon">
-            <i data-lucide="file-signature" style="width:24px;height:24px"></i>
+    <!-- ══════════════ SCREEN: COMPLIANCE ══════════════ -->
+    <div class="screen" id="s-compliance" style="flex-direction:column;overflow:hidden;">
+      <div class="comp-hero">
+        <div class="comp-hero-topbar">
+          <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+          <div class="hero-avatar">SC</div>
+        </div>
+        <div class="comp-hero-title">Compliance Documents</div>
+        <div class="comp-hero-sub">View requested compliance documents and upload files.</div>
+        <div class="comp-stats-row">
+          <div class="comp-stat-pill">
+            <div class="comp-stat-num">4</div>
+            <div class="comp-stat-lbl">Requested</div>
           </div>
-          <div>
-            <div class="agr-card-title">Master Service Agreement</div>
-            <div class="agr-card-via">Auto-generated via SnapForms</div>
+          <div class="comp-stat-pill">
+            <div class="comp-stat-num">4</div>
+            <div class="comp-stat-lbl">Uploaded</div>
+          </div>
+          <div class="comp-stat-pill">
+            <div class="comp-stat-num" style="color:#5DF5A0">4</div>
+            <div class="comp-stat-lbl">Approved</div>
           </div>
         </div>
-        <span class="status-tag approved" style="font-size:12px;padding:6px 14px">
-          <i data-lucide="check-circle-2" style="width:13px;height:13px"></i>
-          Signed & Completed
-        </span>
-        <div class="agr-divider"></div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <button class="view-doc-btn">
-            <i data-lucide="external-link" style="width:16px;height:16px"></i>
-            View Document
+      </div>
+      <svg style="height:28px;flex-shrink:0;background:var(--violet)" viewBox="0 0 390 28" preserveAspectRatio="none">
+        <path d="M0,0 C90,28 200,0 280,14 C360,28 390,8 390,14 L390,28 L0,28 Z" fill="var(--bg)" />
+      </svg>
+
+      <div class="scroll-body">
+        <button class="bulk-upload-btn">
+          <i data-lucide="cloud-upload" style="width:20px;height:20px"></i>
+          Bulk Upload Documents
+        </button>
+
+        <div class="tab-row">
+          <button class="tab-btn active" id="tab-requested" onclick="switchCompTab('requested')">
+            Requested (4)
           </button>
-          <div style="font-size:12px;font-weight:600;color:var(--text-soft)">Signed: May 20, 2026</div>
+          <button class="tab-btn" id="tab-uploaded" onclick="switchCompTab('uploaded')">
+            Uploaded (4)
+          </button>
+        </div>
+
+        <div class="info-banner" style="margin-bottom:0">
+          <i data-lucide="info" style="width:16px;height:16px"></i>
+          <div class="info-banner-text">Please upload the requested compliance documents: <strong>ABN, AHPRA
+              Registration, Australian Driver's Licence, Business Insurance – Public Liability</strong></div>
+        </div>
+
+        <div class="doc-list">
+          <!-- Doc 1 -->
+          <div class="doc-card approved">
+            <div class="doc-card-header">
+              <div class="doc-card-icon approved"><i data-lucide="shield-check" style="width:20px;height:20px"></i>
+              </div>
+              <div class="doc-card-body">
+                <div class="doc-card-title">Business Insurance — Public Liability</div>
+                <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
+                <div class="doc-card-file">📄 help.png</div>
+              </div>
+            </div>
+            <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i>
+              Approved</span>
+            <button class="replace-btn">Replace Document</button>
+          </div>
+          <!-- Doc 2 -->
+          <div class="doc-card approved">
+            <div class="doc-card-header">
+              <div class="doc-card-icon approved"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div>
+              <div class="doc-card-body">
+                <div class="doc-card-title">Australian Driver's Licence</div>
+                <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
+                <div class="doc-card-file">📄 members.png</div>
+              </div>
+            </div>
+            <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i>
+              Approved</span>
+            <button class="replace-btn">Replace Document</button>
+          </div>
+          <!-- Doc 3 -->
+          <div class="doc-card approved">
+            <div class="doc-card-header">
+              <div class="doc-card-icon approved"><i data-lucide="stethoscope" style="width:20px;height:20px"></i></div>
+              <div class="doc-card-body">
+                <div class="doc-card-title">AHPRA — Allied Health Practitioner Registration</div>
+                <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
+                <div class="doc-card-file">📄 invoice.png</div>
+              </div>
+            </div>
+            <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i>
+              Approved</span>
+            <button class="replace-btn">Replace Document</button>
+          </div>
+          <!-- Doc 4 -->
+          <div class="doc-card approved">
+            <div class="doc-card-header">
+              <div class="doc-card-icon approved"><i data-lucide="building" style="width:20px;height:20px"></i></div>
+              <div class="doc-card-body">
+                <div class="doc-card-title">ABN — Australian Business Number</div>
+                <div class="doc-card-accepted">Accepted: PDF, JPG, JPEG, PNG</div>
+                <div class="doc-card-file">📄 invoice.png</div>
+              </div>
+            </div>
+            <span class="status-tag approved"><i data-lucide="check-circle-2" style="width:11px;height:11px"></i>
+              Approved</span>
+            <button class="replace-btn">Replace Document</button>
+          </div>
         </div>
       </div>
 
-      <div style="margin:10px 18px;padding:16px;background:var(--sage3);border-radius:var(--r-lg);border:1.5px solid var(--sage2);display:flex;gap:12px;align-items:flex-start">
-        <i data-lucide="info" style="width:18px;height:18px;color:var(--sage);flex-shrink:0;margin-top:1px"></i>
-        <div>
-          <div style="font-size:13px;font-weight:800;color:var(--sage);margin-bottom:4px">All agreements up to date</div>
-          <div style="font-size:12px;font-weight:600;color:var(--text-mid);line-height:1.5">Your Master Service Agreement has been successfully signed and is now active. No further action is required at this time.</div>
+      <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('services')">
+          <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Services</span>
+        </button>
+        <button class="nav-item active" onclick="showScreen('compliance')">
+          <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Docs</span>
+        </button>
+        <button class="nav-item center-item" onclick="showScreen('dashboard')">
+          <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('agreements')">
+          <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Agreements</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('invoices')">
+          <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Invoices</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════ SCREEN: AGREEMENTS ══════════════ -->
+    <div class="screen" id="s-agreements" style="flex-direction:column;overflow:hidden;">
+      <div class="agr-hero">
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2">
+          <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+          <div class="hero-avatar">SC</div>
+        </div>
+        <div style="position:relative;z-index:2">
+          <div class="hero-greeting">View and manage your</div>
+          <div class="hero-name" style="font-size:22px">My Agreements</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600">Signed contracts and active service
+            agreements</div>
+        </div>
+      </div>
+      <svg style="height:28px;flex-shrink:0;background:#1a5f4a" viewBox="0 0 390 28" preserveAspectRatio="none">
+        <path d="M0,0 C100,28 250,0 390,14 L390,28 L0,28 Z" fill="var(--bg)" />
+      </svg>
+
+      <div class="scroll-body">
+        <div style="height:16px"></div>
+
+        <div class="sec-head">
+          <div class="sec-title"><i data-lucide="file-text" style="width:14px;height:14px"></i> Active Agreements</div>
+          <span class="sec-more">1 document</span>
+        </div>
+
+        <div class="agr-card">
+          <div class="agr-card-header">
+            <div class="agr-card-icon">
+              <i data-lucide="file-signature" style="width:24px;height:24px"></i>
+            </div>
+            <div>
+              <div class="agr-card-title">Master Service Agreement</div>
+              <div class="agr-card-via">Auto-generated via SnapForms</div>
+            </div>
+          </div>
+          <span class="status-tag approved" style="font-size:12px;padding:6px 14px">
+            <i data-lucide="check-circle-2" style="width:13px;height:13px"></i>
+            Signed & Completed
+          </span>
+          <div class="agr-divider"></div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="view-doc-btn">
+              <i data-lucide="external-link" style="width:16px;height:16px"></i>
+              View Document
+            </button>
+            <div style="font-size:12px;font-weight:600;color:var(--text-soft)">Signed: May 20, 2026</div>
+          </div>
+        </div>
+
+        <div
+          style="margin:10px 18px;padding:16px;background:var(--sage3);border-radius:var(--r-lg);border:1.5px solid var(--sage2);display:flex;gap:12px;align-items:flex-start">
+          <i data-lucide="info" style="width:18px;height:18px;color:var(--sage);flex-shrink:0;margin-top:1px"></i>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:var(--sage);margin-bottom:4px">All agreements up to date
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-mid);line-height:1.5">Your Master Service
+              Agreement has been successfully signed and is now active. No further action is required at this time.
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-head" style="margin-top:16px">
+          <div class="sec-title"><i data-lucide="clock" style="width:14px;height:14px"></i> Agreement History</div>
+        </div>
+        <div style="padding:0 18px">
+          <div
+            style="background:var(--white);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-card);display:flex;align-items:center;gap:12px">
+            <div
+              style="width:38px;height:38px;border-radius:12px;background:var(--sage2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i data-lucide="calendar-check" style="width:18px;height:18px;color:var(--sage)"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:700;color:var(--text-dark)">MSA Signed via SnapForms</div>
+              <div style="font-size:11px;font-weight:600;color:var(--text-soft)">May 20, 2026 · 06:51 UTC</div>
+            </div>
+            <span class="status-tag approved" style="font-size:10px">Done</span>
+          </div>
         </div>
       </div>
 
-      <div class="sec-head" style="margin-top:16px">
-        <div class="sec-title"><i data-lucide="clock" style="width:14px;height:14px"></i> Agreement History</div>
+      <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('services')">
+          <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Services</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('compliance')">
+          <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Docs</span>
+        </button>
+        <button class="nav-item center-item" onclick="showScreen('dashboard')">
+          <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item active" onclick="showScreen('agreements')">
+          <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Agreements</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('invoices')">
+          <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Invoices</span>
+        </button>
       </div>
-      <div style="padding:0 18px">
-        <div style="background:var(--white);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-card);display:flex;align-items:center;gap:12px">
-          <div style="width:38px;height:38px;border-radius:12px;background:var(--sage2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i data-lucide="calendar-check" style="width:18px;height:18px;color:var(--sage)"></i>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:var(--text-dark)">MSA Signed via SnapForms</div>
-            <div style="font-size:11px;font-weight:600;color:var(--text-soft)">May 20, 2026 · 06:51 UTC</div>
-          </div>
-          <span class="status-tag approved" style="font-size:10px">Done</span>
+    </div>
+
+    <!-- ══════════════ SCREEN: INVOICES ══════════════ -->
+    <div class="screen" id="s-invoices" style="flex-direction:column;overflow:hidden;">
+      <div class="inv-hero">
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
+          <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+          <div class="hero-avatar">SC</div>
+        </div>
+        <div style="position:relative;z-index:2;margin-bottom:4px">
+          <div class="hero-greeting">Create an invoice manually or</div>
+          <div class="hero-name" style="font-size:20px">Upload PDF / CSV</div>
+        </div>
+        <div class="inv-tab-row">
+          <button class="inv-tab active" id="inv-tab-create" onclick="switchInvTab('create')">Create Invoice</button>
+          <button class="inv-tab" id="inv-tab-upload" onclick="switchInvTab('upload')">Upload PDF / CSV</button>
         </div>
       </div>
-    </div>
+      <svg style="height:26px;flex-shrink:0;background:var(--amber)" viewBox="0 0 390 26" preserveAspectRatio="none">
+        <path d="M0,0 C80,26 180,0 280,13 C360,24 390,8 390,13 L390,26 L0,26 Z" fill="var(--bg)" />
+      </svg>
 
-        <div class="bottom-nav">
-      <button class="nav-item" onclick="showScreen('services')">
-        <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Services</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('compliance')">
-        <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Docs</span>
-      </button>
-      <button class="nav-item center-item" onclick="showScreen('dashboard')">
-        <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-item active" onclick="showScreen('agreements')">
-        <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Agreements</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('invoices')">
-        <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Invoices</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ══════════════ SCREEN: INVOICES ══════════════ -->
-  <div class="screen" id="s-invoices" style="flex-direction:column;overflow:hidden;">
-    <div class="inv-hero">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
-        <div class="hero-avatar">SC</div>
-      </div>
-      <div style="position:relative;z-index:2;margin-bottom:4px">
-        <div class="hero-greeting">Create an invoice manually or</div>
-        <div class="hero-name" style="font-size:20px">Upload PDF / CSV</div>
-      </div>
-      <div class="inv-tab-row">
-        <button class="inv-tab active" id="inv-tab-create" onclick="switchInvTab('create')">Create Invoice</button>
-        <button class="inv-tab" id="inv-tab-upload" onclick="switchInvTab('upload')">Upload PDF / CSV</button>
-      </div>
-    </div>
-    <svg style="height:26px;flex-shrink:0;background:var(--amber)" viewBox="0 0 390 26" preserveAspectRatio="none">
-      <path d="M0,0 C80,26 180,0 280,13 C360,24 390,8 390,13 L390,26 L0,26 Z" fill="var(--bg)"/>
-    </svg>
-
-    <div class="scroll-body">
-      <!-- Invoice Form -->
-      <div id="inv-create-panel">
-        <div class="form-section" style="margin-top:16px">
-          <div class="form-section-header">
-            <i data-lucide="info" style="width:18px;height:18px"></i>
-            <span class="form-section-title">Invoice Details</span>
+      <div class="scroll-body">
+        <!-- Invoice Form -->
+        <div id="inv-create-panel">
+          <div class="form-section" style="margin-top:16px">
+            <div class="form-section-header">
+              <i data-lucide="info" style="width:18px;height:18px"></i>
+              <span class="form-section-title">Invoice Details</span>
+            </div>
+            <div class="provider-chip">
+              <i data-lucide="building-2" style="width:16px;height:16px"></i>
+              <span class="provider-chip-text">Provider: <span class="provider-chip-name">Sensible Care Services Pty
+                  Ltd</span></span>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Client Name *</label>
+              <div style="position:relative">
+                <input class="form-input" value="Abdullah Dastan" placeholder="Search client...">
+                <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:8px">
+                  <i data-lucide="x" style="width:16px;height:16px;color:var(--text-soft);cursor:pointer"></i>
+                  <i data-lucide="search" style="width:16px;height:16px;color:var(--text-soft);cursor:pointer"></i>
+                </div>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Invoice ID</label>
+              <input class="form-input" value="21112">
+            </div>
+            <div class="form-field" style="margin-bottom:0">
+              <label class="form-label">Invoice Date</label>
+              <input class="form-input" type="date" value="2026-05-20">
+            </div>
           </div>
-          <div class="provider-chip">
-            <i data-lucide="building-2" style="width:16px;height:16px"></i>
-            <span class="provider-chip-text">Provider: <span class="provider-chip-name">Sensible Care Services Pty Ltd</span></span>
+
+          <!-- Line Items -->
+          <div class="line-items-head" style="margin-top:16px">
+            <div class="sec-title"><i data-lucide="list" style="width:14px;height:14px"></i> Line Items</div>
+            <button class="add-row-btn">
+              <i data-lucide="plus" style="width:14px;height:14px"></i>
+              Add Row
+            </button>
           </div>
-          <div class="form-field">
-            <label class="form-label">Client Name *</label>
-            <div style="position:relative">
-              <input class="form-input" value="Abdullah Dastan" placeholder="Search client...">
-              <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:8px">
-                <i data-lucide="x" style="width:16px;height:16px;color:var(--text-soft);cursor:pointer"></i>
-                <i data-lucide="search" style="width:16px;height:16px;color:var(--text-soft);cursor:pointer"></i>
+          <div class="line-item-card">
+            <span class="item-badge"><i data-lucide="tag" style="width:12px;height:12px"></i> Item 1</span>
+            <div class="form-field">
+              <label class="form-label">Description</label>
+              <input class="form-input" value="Care 2">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="form-field" style="margin-bottom:0">
+                <label class="form-label">Quantity</label>
+                <input class="form-input" value="1">
+              </div>
+              <div class="form-field" style="margin-bottom:0">
+                <label class="form-label">Price ($)</label>
+                <input class="form-input" placeholder="0.00">
               </div>
             </div>
           </div>
-          <div class="form-field">
-            <label class="form-label">Invoice ID</label>
-            <input class="form-input" value="21112">
+          <div style="padding:0 18px;margin-bottom:10px">
+            <button
+              style="width:100%;padding:15px;border-radius:var(--r-lg);background:linear-gradient(135deg,var(--amber),#e8921b);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(212,128,10,0.35)">
+              <span style="display:flex;align-items:center;justify-content:center;gap:8px">
+                <i data-lucide="send" style="width:18px;height:18px"></i>
+                Submit Invoice
+              </span>
+            </button>
           </div>
-          <div class="form-field" style="margin-bottom:0">
-            <label class="form-label">Invoice Date</label>
-            <input class="form-input" type="date" value="2026-05-20">
+
+          <!-- Recent Invoices -->
+          <div class="sec-head">
+            <div class="sec-title"><i data-lucide="clock" style="width:14px;height:14px"></i> Recent Invoices</div>
+            <span class="sec-more">View all</span>
+          </div>
+          <div class="recent-inv-list">
+            <div class="recent-inv-card">
+              <div class="inv-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+              <div class="inv-body">
+                <div class="inv-id">#21112</div>
+                <div class="inv-client">Client: Abdullah Dastan</div>
+                <div class="inv-manager">Care Manager: Nora Acar</div>
+              </div>
+              <span class="submitted-tag">Submitted</span>
+            </div>
+            <div class="recent-inv-card">
+              <div class="inv-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+              <div class="inv-body">
+                <div class="inv-id">#2111</div>
+                <div class="inv-client">Client: Abdullah Dastan</div>
+                <div class="inv-manager">Care Manager: Nora Acar</div>
+              </div>
+              <span class="submitted-tag">Submitted</span>
+            </div>
           </div>
         </div>
 
-        <!-- Line Items -->
-        <div class="line-items-head" style="margin-top:16px">
-          <div class="sec-title"><i data-lucide="list" style="width:14px;height:14px"></i> Line Items</div>
-          <button class="add-row-btn">
-            <i data-lucide="plus" style="width:14px;height:14px"></i>
-            Add Row
-          </button>
-        </div>
-        <div class="line-item-card">
-          <span class="item-badge"><i data-lucide="tag" style="width:12px;height:12px"></i> Item 1</span>
-          <div class="form-field">
-            <label class="form-label">Description</label>
-            <input class="form-input" value="Care 2">
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div class="form-field" style="margin-bottom:0">
-              <label class="form-label">Quantity</label>
-              <input class="form-input" value="1">
+        <!-- Upload Panel (hidden) -->
+        <div id="inv-upload-panel" style="display:none;padding:18px">
+          <div
+            style="background:var(--white);border-radius:var(--r-xl);padding:32px 20px;text-align:center;box-shadow:var(--shadow-card);border:2.5px dashed var(--slate3)">
+            <div
+              style="width:64px;height:64px;border-radius:20px;background:var(--sky3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+              <i data-lucide="cloud-upload" style="width:30px;height:30px;color:var(--sky)"></i>
             </div>
-            <div class="form-field" style="margin-bottom:0">
-              <label class="form-label">Price ($)</label>
-              <input class="form-input" placeholder="0.00">
-            </div>
+            <div style="font-size:16px;font-weight:800;color:var(--text-dark);margin-bottom:8px">Upload PDF or CSV</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text-soft);line-height:1.5;margin-bottom:20px">Drop
+              your invoice file here or tap to browse. We'll extract the fields and match services automatically.</div>
+            <button
+              style="padding:14px 32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer">
+              Browse File
+            </button>
           </div>
         </div>
-        <div style="padding:0 18px;margin-bottom:10px">
-          <button style="width:100%;padding:15px;border-radius:var(--r-lg);background:linear-gradient(135deg,var(--amber),#e8921b);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(212,128,10,0.35)">
-            <span style="display:flex;align-items:center;justify-content:center;gap:8px">
-              <i data-lucide="send" style="width:18px;height:18px"></i>
-              Submit Invoice
-            </span>
-          </button>
-        </div>
+      </div>
 
-        <!-- Recent Invoices -->
+      <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('services')">
+          <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Services</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('compliance')">
+          <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Docs</span>
+        </button>
+        <button class="nav-item center-item" onclick="showScreen('dashboard')">
+          <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('agreements')">
+          <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Agreements</span>
+        </button>
+        <button class="nav-item active" onclick="showScreen('invoices')">
+          <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Invoices</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════ SCREEN: SERVICES ══════════════ -->
+    <div class="screen" id="s-services" style="flex-direction:column;overflow:hidden;">
+      <div class="serv-hero">
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
+          <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
+          <div class="hero-avatar">SC</div>
+        </div>
+        <div style="position:relative;z-index:2;margin-bottom:16px">
+          <div class="hero-greeting">Services you are approved to provide</div>
+          <div class="hero-name" style="font-size:22px">My Services</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600">Matching your Aged Care framework
+            selection</div>
+        </div>
+        <button class="request-change-btn">
+          <i data-lucide="pencil" style="width:16px;height:16px"></i>
+          Request Change
+        </button>
+      </div>
+      <svg style="height:28px;flex-shrink:0;background:#0e5c4a" viewBox="0 0 390 28" preserveAspectRatio="none">
+        <path d="M0,0 C100,28 200,0 390,14 L390,28 L0,28 Z" fill="var(--bg)" />
+      </svg>
+
+      <div class="scroll-body">
+        <div style="height:14px"></div>
+
         <div class="sec-head">
-          <div class="sec-title"><i data-lucide="clock" style="width:14px;height:14px"></i> Recent Invoices</div>
-          <span class="sec-more">View all</span>
+          <div class="sec-title"><i data-lucide="briefcase-medical" style="width:14px;height:14px"></i> Active Services
+          </div>
+          <span class="status-tag approved" style="font-size:11px">1 Active</span>
         </div>
-        <div class="recent-inv-list">
-          <div class="recent-inv-card">
-            <div class="inv-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-            <div class="inv-body">
-              <div class="inv-id">#21112</div>
-              <div class="inv-client">Client: Abdullah Dastan</div>
-              <div class="inv-manager">Care Manager: Nora Acar</div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <div class="service-card-left">
+              <div class="service-icon"><i data-lucide="home" style="width:22px;height:22px"></i></div>
+              <div class="service-name">Home modification<br>products</div>
             </div>
-            <span class="submitted-tag">Submitted</span>
+            <span class="active-badge">Active</span>
           </div>
-          <div class="recent-inv-card">
-            <div class="inv-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-            <div class="inv-body">
-              <div class="inv-id">#2111</div>
-              <div class="inv-client">Client: Abdullah Dastan</div>
-              <div class="inv-manager">Care Manager: Nora Acar</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:14px">Home modification
+            products for aged care support</div>
+          <div class="service-details-grid">
+            <div class="service-detail">
+              <div class="service-detail-label">Code</div>
+              <div class="service-detail-val">SERV-0067</div>
             </div>
-            <span class="submitted-tag">Submitted</span>
+            <div class="service-detail">
+              <div class="service-detail-label">Category</div>
+              <div class="service-detail-val">Support at Home</div>
+            </div>
+            <div class="service-detail">
+              <div class="service-detail-label">Time Unit</div>
+              <div class="service-detail-val">N/A</div>
+            </div>
+            <div class="service-detail">
+              <div class="service-detail-label">Rate / Fee</div>
+              <div class="service-detail-val" style="color:var(--sage)">$21.00</div>
+            </div>
+            <div class="service-detail">
+              <div class="service-detail-label">GST</div>
+              <div class="service-detail-val">No</div>
+            </div>
+            <div class="service-detail">
+              <div class="service-detail-label">Framework</div>
+              <div class="service-detail-val">Aged Care</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div
+          style="margin:14px 18px;padding:16px;background:var(--sky3);border-radius:var(--r-lg);border:1.5px solid var(--sky2);display:flex;gap:12px">
+          <i data-lucide="info" style="width:18px;height:18px;color:var(--sky);flex-shrink:0;margin-top:1px"></i>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:var(--sky);margin-bottom:4px">Need to add a service?</div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-mid);line-height:1.5">Tap "Request Change" to
+              submit a request for service updates or additions. Our team will review within 2 business days.</div>
           </div>
         </div>
       </div>
 
-      <!-- Upload Panel (hidden) -->
-      <div id="inv-upload-panel" style="display:none;padding:18px">
-        <div style="background:var(--white);border-radius:var(--r-xl);padding:32px 20px;text-align:center;box-shadow:var(--shadow-card);border:2.5px dashed var(--slate3)">
-          <div style="width:64px;height:64px;border-radius:20px;background:var(--sky3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-            <i data-lucide="cloud-upload" style="width:30px;height:30px;color:var(--sky)"></i>
-          </div>
-          <div style="font-size:16px;font-weight:800;color:var(--text-dark);margin-bottom:8px">Upload PDF or CSV</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text-soft);line-height:1.5;margin-bottom:20px">Drop your invoice file here or tap to browse. We'll extract the fields and match services automatically.</div>
-          <button style="padding:14px 32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer">
-            Browse File
-          </button>
-        </div>
+      <div class="bottom-nav">
+        <button class="nav-item active" onclick="showScreen('services')">
+          <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Services</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('compliance')">
+          <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Docs</span>
+        </button>
+        <button class="nav-item center-item" onclick="showScreen('dashboard')">
+          <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('agreements')">
+          <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Agreements</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('invoices')">
+          <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
+          <span class="nav-label">Invoices</span>
+        </button>
       </div>
     </div>
 
-        <div class="bottom-nav">
-      <button class="nav-item" onclick="showScreen('services')">
-        <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Services</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('compliance')">
-        <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Docs</span>
-      </button>
-      <button class="nav-item center-item" onclick="showScreen('dashboard')">
-        <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('agreements')">
-        <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Agreements</span>
-      </button>
-      <button class="nav-item active" onclick="showScreen('invoices')">
-        <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Invoices</span>
-      </button>
-    </div>
-  </div>
+  </div><!-- /device -->
 
-  <!-- ══════════════ SCREEN: SERVICES ══════════════ -->
-  <div class="screen" id="s-services" style="flex-direction:column;overflow:hidden;">
-    <div class="serv-hero">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2">
-        <img src="logo_dark.svg" class="hero-logo" alt="Sensible Care" style="height:26px">
-        <div class="hero-avatar">SC</div>
-      </div>
-      <div style="position:relative;z-index:2;margin-bottom:16px">
-        <div class="hero-greeting">Services you are approved to provide</div>
-        <div class="hero-name" style="font-size:22px">My Services</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600">Matching your Aged Care framework selection</div>
-      </div>
-      <button class="request-change-btn">
-        <i data-lucide="pencil" style="width:16px;height:16px"></i>
-        Request Change
-      </button>
-    </div>
-    <svg style="height:28px;flex-shrink:0;background:#0e5c4a" viewBox="0 0 390 28" preserveAspectRatio="none">
-      <path d="M0,0 C100,28 200,0 390,14 L390,28 L0,28 Z" fill="var(--bg)"/>
-    </svg>
-
-    <div class="scroll-body">
-      <div style="height:14px"></div>
-
-      <div class="sec-head">
-        <div class="sec-title"><i data-lucide="briefcase-medical" style="width:14px;height:14px"></i> Active Services</div>
-        <span class="status-tag approved" style="font-size:11px">1 Active</span>
-      </div>
-
-      <div class="service-card">
-        <div class="service-card-header">
-          <div class="service-card-left">
-            <div class="service-icon"><i data-lucide="home" style="width:22px;height:22px"></i></div>
-            <div class="service-name">Home modification<br>products</div>
-          </div>
-          <span class="active-badge">Active</span>
-        </div>
-        <div style="font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:14px">Home modification products for aged care support</div>
-        <div class="service-details-grid">
-          <div class="service-detail">
-            <div class="service-detail-label">Code</div>
-            <div class="service-detail-val">SERV-0067</div>
-          </div>
-          <div class="service-detail">
-            <div class="service-detail-label">Category</div>
-            <div class="service-detail-val">Support at Home</div>
-          </div>
-          <div class="service-detail">
-            <div class="service-detail-label">Time Unit</div>
-            <div class="service-detail-val">N/A</div>
-          </div>
-          <div class="service-detail">
-            <div class="service-detail-label">Rate / Fee</div>
-            <div class="service-detail-val" style="color:var(--sage)">$21.00</div>
-          </div>
-          <div class="service-detail">
-            <div class="service-detail-label">GST</div>
-            <div class="service-detail-val">No</div>
-          </div>
-          <div class="service-detail">
-            <div class="service-detail-label">Framework</div>
-            <div class="service-detail-val">Aged Care</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Info card -->
-      <div style="margin:14px 18px;padding:16px;background:var(--sky3);border-radius:var(--r-lg);border:1.5px solid var(--sky2);display:flex;gap:12px">
-        <i data-lucide="info" style="width:18px;height:18px;color:var(--sky);flex-shrink:0;margin-top:1px"></i>
-        <div>
-          <div style="font-size:13px;font-weight:800;color:var(--sky);margin-bottom:4px">Need to add a service?</div>
-          <div style="font-size:12px;font-weight:600;color:var(--text-mid);line-height:1.5">Tap "Request Change" to submit a request for service updates or additions. Our team will review within 2 business days.</div>
-        </div>
-      </div>
-    </div>
-
-        <div class="bottom-nav">
-      <button class="nav-item active" onclick="showScreen('services')">
-        <div class="nav-icon-wrap"><i data-lucide="briefcase-medical" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Services</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('compliance')">
-        <div class="nav-icon-wrap"><i data-lucide="shield-check" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Docs</span>
-      </button>
-      <button class="nav-item center-item" onclick="showScreen('dashboard')">
-        <div class="nav-icon-wrap"><i data-lucide="layout-dashboard" style="width:22px;height:22px"></i></div>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('agreements')">
-        <div class="nav-icon-wrap"><i data-lucide="file-signature" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Agreements</span>
-      </button>
-      <button class="nav-item" onclick="showScreen('invoices')">
-        <div class="nav-icon-wrap"><i data-lucide="receipt" style="width:20px;height:20px"></i></div>
-        <span class="nav-label">Invoices</span>
-      </button>
-    </div>
-  </div>
-
-</div><!-- /device -->
-
-<script>
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('s-' + id).classList.add('active');
-  lucide.createIcons();
-}
-function switchCompTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-}
-function switchInvTab(tab) {
-  document.querySelectorAll('.inv-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('inv-tab-' + tab).classList.add('active');
-  document.getElementById('inv-create-panel').style.display = tab === 'create' ? 'block' : 'none';
-  document.getElementById('inv-upload-panel').style.display = tab === 'upload' ? 'block' : 'none';
-}
-lucide.createIcons();
-</script>
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s-' + id).classList.add('active');
+      lucide.createIcons();
+    }
+    function switchCompTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+    }
+    function switchInvTab(tab) {
+      document.querySelectorAll('.inv-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('inv-tab-' + tab).classList.add('active');
+      document.getElementById('inv-create-panel').style.display = tab === 'create' ? 'block' : 'none';
+      document.getElementById('inv-upload-panel').style.display = tab === 'upload' ? 'block' : 'none';
+    }
+    function updateScale() {
+      const availH = window.innerHeight - 64;
+      const availW = window.innerWidth - 32;
+      const hScale = availH / 844;
+      const wScale = availW / 390;
+      const scale = Math.max(Math.min(hScale, wScale, 1), 0.6);
+      const device = document.querySelector('.device');
+      if (device) {
+        device.style.transform = `scale(${scale})`;
+        device.style.marginTop = scale < 1 ? `${(844 * (scale - 1)) / 2}px` : '0';
+        device.style.marginBottom = scale < 1 ? `${(844 * (scale - 1)) / 2}px` : '0';
+      }
+    }
+    window.addEventListener('resize', updateScale);
+    window.addEventListener('load', () => {
+      lucide.createIcons();
+      updateScale();
+    });
+  </script>
 </body>
+
 </html>
